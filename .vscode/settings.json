@@ -10,5 +10,6 @@
         "repositorio",
         "usecases",
         "venv"
-    ]
+    ],
+    "wolf.disableHotModeWarning": true
 }
