@@ -9,14 +9,13 @@ def validar_caminho(caminho):
     Retorna uma string indicando o tipo do caminho ('arquivo' ou 'diretório')
     ou 'inexistente' se o caminho não for válido.
     """
-    if caminho is None or not isinstance(caminho, str):
+    if caminho is None or not isinstance(caminho, str) or caminho.strip() == "":
         raise ValueError("O caminho deve ser uma string não vazia.")
 
     path = Path(caminho)
-
-    if path.exists():
-        if path.is_file():
-            return 'arquivo'
-        elif path.is_dir():
-            return 'diretório'
-    return 'inexistente'
+    if not path.exists():
+        return 'inexistente'
+    elif path.is_dir():
+        return 'diretório'
+    else:
+        return 'arquivo'
