@@ -1,9 +1,6 @@
 flask
-
 pytest
-
+pytest-cov
 bandit
-
 flake8
-
 pre-commit

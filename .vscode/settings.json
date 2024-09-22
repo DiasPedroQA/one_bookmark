@@ -6,6 +6,7 @@
     "python.testing.pytestEnabled": true,
     "cSpell.words": [
         "pytest",
-        "repositorio"
+        "repositorio",
+        "venv"
     ]
 }

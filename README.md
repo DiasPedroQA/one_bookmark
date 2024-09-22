@@ -1,77 +1,90 @@
-# README - One_Bookmark
+# `README.md`
 
-Este arquivo contém as instruções necessárias para configurar e utilizar o projeto. Aqui você encontrará informações sobre a configuração, dependências, como executar testes e outras diretrizes importantes.
+```md
+# One Bookmark - API para Manipulação de Arquivos HTML
 
-## Para que serve este repositório?
+Este repositório contém o código-fonte da **One Bookmark**, uma API em Python desenvolvida para manipular e processar arquivos HTML. O projeto utiliza TDD (Desenvolvimento Orientado a Testes) com `pytest` e `coverage` para garantir a qualidade e cobertura de testes.
 
-Este repositório contém o código-fonte para um projeto que visa [descrição do objetivo do projeto, por exemplo, "desenvolver uma API RESTful para gerenciamento de tarefas"].
+## Objetivo do Projeto
 
-- **Resumo rápido**: [Descreva brevemente o que o projeto faz e seus principais recursos.]
-- **Versão**: [Inclua a versão atual do projeto ou a versão mais recente disponível.]
+A **One Bookmark** tem como finalidade:
 
-## Como faço para configurar?
+- Ler arquivos HTML e diretórios.
+- Extrair dados das tags `<a>` e `<h3>` usando **BeautifulSoup**.
+- Retornar os resultados em formato JSON.
 
-Siga os passos abaixo para configurar o ambiente de desenvolvimento e executar o projeto:
+## Funcionalidades Principais
 
-1. **Resumo da configuração**: 
-   - Descreva brevemente o que é necessário para começar a usar o projeto, como requisitos de sistema ou software.
+- **Leitura de arquivos e diretórios HTML**: A API permite navegar por diretórios e identificar arquivos HTML para extração de dados.
+- **Extração de dados**: Os dados das tags HTML, como `<a>` e `<h3>`, são capturados e estruturados.
+- **Saída em formato JSON**: Todos os resultados processados são convertidos em JSON para fácil manipulação.
+- **Desenvolvimento orientado a testes**: A API é desenvolvida utilizando boas práticas de TDD com cobertura de testes.
 
-2. **Configuração**:
-   - Clone o repositório:
-     ```bash
-     git clone <https://github.com/seu-usuario/seu-repositorio.git>
-     ```
-   - Navegue até o diretório do projeto:
-     ```bash
-     cd seu-repositorio
-     ```
+## Como Configurar o Projeto?
 
-3. **Dependências**:
-   - Certifique-se de que você tem [Conda](https://docs.conda.io/en/latest/) instalado.
-   - Crie e ative um ambiente Conda:
-     ```bash
-     conda create --name my_conda_env python=3.8
-     conda activate my_conda_env
-     ```
-   - Instale as dependências do projeto:
-     ```bash
-     pip install -r requirements.txt
-     ```
+### Requisitos
 
-4. **Configuração do banco de dados**:
-   - [Inclua instruções para configurar o banco de dados, se aplicável, como criar bancos de dados, tabelas, ou rodar migrações.]
+- **Sistema Operacional**: Ubuntu (ou qualquer sistema Unix-like).
+- **Python**: Versão 3.12.3
 
-5. **Como executar testes**:
-   - Execute os testes unitários e de integração com:
-     ```bash
-     pytest
-     ```
+### Passos de Configuração
 
-6. **Instruções de implantação**:
-   - [Descreva como implantar o projeto em um ambiente de produção ou em um servidor, se aplicável.]
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/DiasPedroQA/one_bookmark.git
+   cd one_bookmark
+   ```
 
-## Diretrizes de contribuição
+2. **Crie e ative o ambiente virtual com `venv`**:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
 
-Se você deseja contribuir para o projeto, siga as diretrizes abaixo:
+3. **Instale as dependências**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configuração do Banco de Dados** (se aplicável):
+   - Não há banco de dados necessário neste projeto no momento. Dependências relacionadas à infraestrutura e banco de dados podem ser adicionadas no futuro.
+
+## Como Executar os Testes?
+
+Para garantir a qualidade do código, execute os testes com `pytest`:
+
+```bash
+pytest --cov=app
+```
+
+Isso executará os testes unitários e gerará um relatório de cobertura de código.
+
+## Como Contribuir?
+
+Se você deseja contribuir com o desenvolvimento da **One Bookmark**, siga as diretrizes abaixo:
 
 - **Escrevendo testes**:
-  - [Inclua orientações sobre como escrever e organizar testes.]
+  - Certifique-se de cobrir novos recursos com testes unitários.
+  - Utilize `pytest` e busque manter uma cobertura de testes alta com `pytest-cov`.
 
 - **Revisão de código**:
-  - [Descreva o processo de revisão de código e quaisquer padrões de codificação a serem seguidos.]
+  - Todo código deve passar por revisão antes de ser aceito no repositório principal.
 
-- **Outras diretrizes**:
-  - [Adicione qualquer outra informação relevante para contribuidores.]
+- **Padrões de código**:
+  - Utilize `flake8` e `black` para garantir que o código segue os padrões de formatação e qualidade.
 
-## Com quem devo falar?
+## Contato
 
-Se você tiver dúvidas ou precisar de ajuda adicional, entre em contato com:
+Para dúvidas ou contribuições, entre em contato com o administrador do repositório:
 
-- **Proprietário ou administrador do repositório**: [Nome e informações de contato]
-- **Outro contato da comunidade ou equipe**: [Nome e informações de contato]
+- **Nome**: Pedro PM Dias
+- **Email**: diaspedro.dev@gmail.com
+
+Fique à vontade para abrir issues ou enviar pull requests com sugestões e melhorias!
 
 ## Recursos Adicionais
 
-- [Aprenda Markdown](https://github.com/tutorials/markdowndemo): Um guia útil para escrever e formatar documentos Markdown.
-
-Sinta-se à vontade para abrir uma issue ou enviar um pull request com sugestões ou melhorias!
+- [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/): Guia para trabalhar com a extração de dados de HTML.
+- [Pytest Documentation](https://docs.pytest.org/en/7.0.x/): Documentação oficial do framework de testes.
+- [Aprenda Markdown](https://github.com/tutorials/markdowndemo): Guia útil para escrever e formatar documentos em Markdown.
+```
