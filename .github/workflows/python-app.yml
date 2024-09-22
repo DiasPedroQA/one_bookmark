@@ -36,7 +36,7 @@ jobs:
     - name: Run lint checks
       run: |
         source .venv/bin/activate
-        flake8 .
+        flake8 app
 
     # Executar testes com cobertura de código
     - name: Run tests
