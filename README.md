@@ -19,7 +19,7 @@ Siga os passos abaixo para configurar o ambiente de desenvolvimento e executar o
 2. **Configuração**:
    - Clone o repositório:
      ```bash
-     git clone <https://bitbucket.org/seu-usuario/seu-repositorio.git>
+     git clone <https://github.com/seu-usuario/seu-repositorio.git>
      ```
    - Navegue até o diretório do projeto:
      ```bash
@@ -72,6 +72,6 @@ Se você tiver dúvidas ou precisar de ajuda adicional, entre em contato com:
 
 ## Recursos Adicionais
 
-- [Aprenda Markdown](https://bitbucket.org/tutorials/markdowndemo): Um guia útil para escrever e formatar documentos Markdown.
+- [Aprenda Markdown](https://github.com/tutorials/markdowndemo): Um guia útil para escrever e formatar documentos Markdown.
 
 Sinta-se à vontade para abrir uma issue ou enviar um pull request com sugestões ou melhorias!
