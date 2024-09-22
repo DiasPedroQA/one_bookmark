@@ -17,5 +17,7 @@ def validar_caminho(caminho):
         return 'inexistente'
     elif path.is_dir():
         return 'diretório'
-    else:
+    elif path.is_file():  # Verifique se é um arquivo
         return 'arquivo'
+    else:
+        return 'inexistente'  # Para casos onde não é nem arquivo nem diretório

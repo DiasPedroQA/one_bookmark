@@ -11,15 +11,14 @@ from app.core.usecases.validador_caminho import validar_caminho
     ("caminho/nao/existe.txt", 'inexistente')
 ])
 def test_validar_caminho(caminho, esperado):
-    """Teste a validação de caminhos para arquivos e diretórios existentes."""
-    resultado = validar_caminho(caminho)
-    assert resultado == esperado, f"Esperado: {esperado}, Obtido: {resultado}"
+    """Teste a validação de caminhos."""
+    assert validar_caminho(caminho) == esperado
 
 
 @pytest.mark.parametrize("caminho", [
     None,
     "",
-    "invalid/path/to/file"
+    " "
 ])
 def test_validar_caminho_excecoes(caminho):
     """Teste a validação de caminhos para entradas inválidas."""
