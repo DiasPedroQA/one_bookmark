@@ -1,0 +1,21 @@
+[flake8]
+max-line-length = 100
+
+exclude = .git,__pycache__,venv,migrations,.pytest_cache,.vscode,env
+
+ignore = E203, W503, C901, F401
+
+# Regras mais detalhadas para linting de código
+select = B,C,E,F,W,T4,B9
+
+# Exibe todo código que exceda o limite de 100 caracteres
+show-source = True
+
+# Evita erros quando rodar o flake8 em diretórios com pastas vazias
+enable-extensions = G
+
+# Especifica diretórios onde arquivos de configuração adicionais podem estar
+extend-ignore = E203, E266, E501, W503
+
+# Formato de relatório
+format = pylint

@@ -1,0 +1,9 @@
+flask
+
+pytest
+
+bandit
+
+flake8
+
+pre-commit
