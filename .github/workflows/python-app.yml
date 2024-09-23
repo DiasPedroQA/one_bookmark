@@ -80,7 +80,7 @@ jobs:
         server_port: 587
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        from: your-email@example.com  # Adicione aqui
+        from: diaspedro.code@gmail.com
         subject: 'CI Build Failed'
         body: 'The build has failed.'
-        to: recipient@example.com
+        to: diaspedro.dev@gmail.com
