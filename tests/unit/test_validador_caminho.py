@@ -1,8 +1,5 @@
 import pytest
-from unittest.mock import patch
 from app.core.usecases.validador_caminho import validar_caminho
-from typing import Union, Any
-import os
 from unittest import mock
 
 
