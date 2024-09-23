@@ -13,59 +13,56 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.12']
+        python-version: ['3.11', '3.12']
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    # Cache pip dependencies
-    - name: Cache pip
-      uses: actions/cache@v3
-      with:
-        path: .venv
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-    - name: Install dependencies
-      run: |
-        python -m venv .venv
-        source .venv/bin/activate
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/activate
+          pip install -r requirements.txt
 
-    - name: Run lint checks
-      run: |
-        source .venv/bin/activate
-        flake8 app
+      - name: Lint Code
+        run: |
+          .venv/bin/activate
+          flake8 app
 
-    - name: Run unit tests
-      run: |
-        source .venv/bin/activate
-        pytest --cov=app --cov-report=xml
+      - name: Run Unit Tests
+        run: |
+          .venv/bin/activate
+          pytest --cov=app --cov-report=xml
 
-    - name: Upload coverage to Codecov
-      if: success()  # Garante que essa etapa só execute se as anteriores forem bem-sucedidas
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+        if: success()
 
-    - name: Check for vulnerabilities
-      if: success()  # Executa apenas se a etapa anterior for bem-sucedida
-      run: |
-        source .venv/bin/activate
-        pip install pip-audit  # Certifique-se de que pip-audit esteja instalado
-        pip-audit
+      - name: Check for Vulnerabilities
+        run: |
+          .venv/bin/activate
+          pip install pip-audit
+          pip-audit
 
-    - name: Run pre-commit
-      if: success()  # Executa apenas se a etapa anterior for bem-sucedida
-      run: |
-        source .venv/bin/activate
-        pre-commit run --all-files
+      - name: Run Pre-Commit Hooks
+        run: |
+          .venv/bin/activate
+          pre-commit run --all-files
