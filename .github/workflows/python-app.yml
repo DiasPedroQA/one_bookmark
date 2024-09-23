@@ -49,11 +49,6 @@ jobs:
         source .venv/bin/activate
         pytest --cov=app --cov-report=xml
 
-    - name: Run integration tests
-      run: |
-        source .venv/bin/activate
-        pytest tests/integration --cov=app --cov-report=xml
-
     - name: Upload coverage to Codecov
       if: success()  # Garante que essa etapa só execute se as anteriores forem bem-sucedidas
       uses: codecov/codecov-action@v3
