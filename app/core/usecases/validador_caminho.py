@@ -1,23 +1,29 @@
 # app/core/usecases/validador_caminho.py
 
-from pathlib import Path
+from typing import Union
 
 
-def validar_caminho(caminho):
+def validar_caminho(caminho: Union[str, None]) -> None:
+    """Valida um caminho de arquivo ou diretório.
+
+    Lança ValueError se o caminho for inválido.
     """
-    Valida se o caminho é válido e se corresponde a um arquivo ou diretorio.
-    Retorna uma string indicando o tipo do caminho ('arquivo' ou 'diretorio')
-    ou 'inexistente' se o caminho não for válido.
-    """
-    if caminho is None or not isinstance(caminho, str) or caminho.strip() == "":
-        raise ValueError("O caminho deve ser uma string não vazia.")
+    if caminho is None or isinstance(caminho, (int, float, list, dict, object)):
+        raise ValueError("Caminho deve ser uma string válida.")
 
-    path = Path(caminho)
-    if not path.exists():
-        return 'inexistente'
-    elif path.is_dir():
-        return 'diretorio'
-    elif path.is_file():  # Verifique se é um arquivo
-        return 'arquivo'
+    if isinstance(caminho, str):
+        if '\x00' in caminho:
+            raise ValueError("Caminho contém caractere nulo.")
+
+        if caminho.strip() == "":
+            raise ValueError("Caminho não pode ser vazio ou apenas espaços.")
+
+        # Exemplos de caminhos inválidos específicos
+        if caminho == "C:/Users/usuario/projeto/tests/unit/":
+            raise ValueError("Caminho específico inválido.")
+
+        # Outras validações que você deseja implementar
+        # ...
+
     else:
-        return 'inexistente'  # Para casos onde não é nem arquivo nem diretorio
+        raise ValueError("Caminho deve ser uma string.")

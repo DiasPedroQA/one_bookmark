@@ -1,48 +1,80 @@
 # tests/unit/test_validador_caminho.py
 
 import pytest
+from unittest.mock import patch
 from app.core.usecases.validador_caminho import validar_caminho
+from typing import Union, Any
 
 
-# Teste para validar caminhos em diferentes sistemas operacionais
+# Testes para caminhos válidos
 @pytest.mark.parametrize("caminho, esperado", [
-    # Caminhos válidos para Linux/Ubuntu/Mac
-    ("/home/usuario/projeto/tests/unit/test_validador_caminho.py", 'arquivo'),
-    ("/home/usuario/projeto/tests/unit/", 'diretorio'),
-
-    # Caminhos válidos para Windows
-    ("C:\\Users\\usuario\\projeto\\tests\\unit\\test_validador_caminho.py", 'arquivo'),
-    ("C:\\Users\\usuario\\projeto\\tests\\unit\\", 'diretorio'),
-
-    # Caminhos inexistentes
-    ("/caminho/nao/existe.txt", 'inexistente'),
-    ("C:\\caminho\\nao\\existe.txt", 'inexistente')
+    ("/caminho/para/arquivo.txt", 'arquivo'),  # Linux
+    ("/caminho/para/diretorio/", 'diretorio'),  # Linux
+    ("C:/caminho/para/arquivo.txt", 'arquivo'),  # Windows
+    ("C:/caminho/para/diretorio/", 'diretorio'),  # Windows
 ])
-def test_validar_caminho(caminho, esperado):
-    """Teste a validação de caminhos em diferentes sistemas operacionais."""
-    assert validar_caminho(caminho) == esperado
+def test_validar_caminho(caminho: str, esperado: str) -> None:
+    """Teste a validação de caminhos válidos usando mocks."""
+
+    with patch('os.path.exists') as mock_exists, \
+        patch('os.path.isfile') as mock_isfile, \
+         patch('os.path.isdir') as mock_isdir:
+
+        # Configura o mock para os.path.exists retornar True
+        mock_exists.return_value = True
+
+        # Configura os mocks para isfile e isdir conforme o tipo esperado
+        if esperado == 'arquivo':
+            mock_isfile.return_value = True
+            mock_isdir.return_value = False
+        elif esperado == 'diretorio':
+            mock_isfile.return_value = False
+            mock_isdir.return_value = True
+        else:
+            mock_isfile.return_value = False
+            mock_isdir.return_value = False
+
+        resultado = validar_caminho(caminho)
+        assert resultado == esperado
 
 
-# Teste para validar exceções com entradas inválidas
+# Testes para caminhos inexistentes
+def test_validar_caminho_inexistente() -> None:
+    """Teste para validar um caminho inexistente."""
+
+    caminhos = [
+        "/caminho/nao/existe.txt",  # Linux
+        "C:/caminho/nao/existe.txt"  # Windows
+    ]
+
+    for caminho in caminhos:
+        with patch('os.path.exists') as mock_exists:
+            mock_exists.return_value = False  # Simula que o caminho não existe
+            resultado = validar_caminho(caminho)
+            assert resultado == 'inexistente'
+
+
+# Testes para caminhos inválidos
 @pytest.mark.parametrize("caminho", [
-    None,                                   # Valor None
-    "",                                     # String vazia
-    " ",                                    # String com espaço em branco
-    0,                                      # Inteiro
-    0.5,                                    # Float
-    [],                                     # Lista vazia
-    ["caminho"],                            # Lista com string
-    {},                                     # Dicionário vazio
-    {"path": "caminho"},                    # Dicionário com chave "path"
-    object(),                               # Instância de objeto
-    lambda x: x,                            # Função lambda
-    b"/home/usuario/projeto/",              # Byte string
-    "/home/usuario/projeto/\x00",           # Caracteres nulos no caminho
-    "C:/Users/usuario/projeto/\x00",        # Caracteres nulos no Windows
-    "/caminho_invalido\\erro_misto/",       # Mistura de barras no Linux
-    "C:/Users/usuario/projeto/tests/unit/"  # Uso de barra comum no Windows
+    None,
+    "",
+    " ",
+    0,
+    0.5,
+    [],
+    ["caminho"],
+    {},
+    {"path": "caminho"},
+    object(),
+    lambda x: x,
+    b"/home/usuario/projeto/",
+    "/home/usuario/projeto/\x00",
+    "C:/Users/usuario/projeto/\x00",
+    "/caminho_invalido\\erro_misto/",
+    "C:/Users/usuario/projeto/tests/unit/"
 ])
-def test_validar_caminho_excecoes(caminho):
+def test_validar_caminho_excecoes(caminho: Union[str, None, int, float, list, dict, object, bytes, Any]) -> None:
     """Teste a validação de caminhos para entradas inválidas."""
+
     with pytest.raises(ValueError):
         validar_caminho(caminho)
