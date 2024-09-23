@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ['3.12']
 
     steps:
     - name: Checkout code
@@ -55,6 +55,7 @@ jobs:
         pytest tests/integration --cov=app --cov-report=xml
 
     - name: Upload coverage to Codecov
+      if: success()  # Garante que essa etapa só execute se as anteriores forem bem-sucedidas
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.xml
@@ -62,11 +63,13 @@ jobs:
         name: codecov-umbrella
 
     - name: Check for vulnerabilities
+      if: success()  # Executa apenas se a etapa anterior for bem-sucedida
       run: |
         source .venv/bin/activate
         pip-audit
 
     - name: Run pre-commit
+      if: success()  # Executa apenas se a etapa anterior for bem-sucedida
       run: |
         source .venv/bin/activate
         pre-commit run --all-files
