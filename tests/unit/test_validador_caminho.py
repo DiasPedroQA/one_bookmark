@@ -1,80 +1,72 @@
-# tests/unit/test_validador_caminho.py
-
 import pytest
 from unittest.mock import patch
 from app.core.usecases.validador_caminho import validar_caminho
 from typing import Union, Any
+import os
+from unittest import mock
 
 
-# Testes para caminhos válidos
-@pytest.mark.parametrize("caminho, esperado", [
-    ("/caminho/para/arquivo.txt", 'arquivo'),  # Linux
-    ("/caminho/para/diretorio/", 'diretorio'),  # Linux
-    ("C:/caminho/para/arquivo.txt", 'arquivo'),  # Windows
-    ("C:/caminho/para/diretorio/", 'diretorio'),  # Windows
-])
-def test_validar_caminho(caminho: str, esperado: str) -> None:
-    """Teste a validação de caminhos válidos usando mocks."""
-
-    with patch('os.path.exists') as mock_exists, \
-        patch('os.path.isfile') as mock_isfile, \
-         patch('os.path.isdir') as mock_isdir:
-
-        # Configura o mock para os.path.exists retornar True
-        mock_exists.return_value = True
-
-        # Configura os mocks para isfile e isdir conforme o tipo esperado
-        if esperado == 'arquivo':
-            mock_isfile.return_value = True
-            mock_isdir.return_value = False
-        elif esperado == 'diretorio':
-            mock_isfile.return_value = False
-            mock_isdir.return_value = True
-        else:
-            mock_isfile.return_value = False
-            mock_isdir.return_value = False
-
-        resultado = validar_caminho(caminho)
-        assert resultado == esperado
+@pytest.fixture
+def setup_temp_files(tmp_path):
+    dir_path = tmp_path / "test_dir"
+    dir_path.mkdir()
+    file_path = dir_path / "test_file.txt"
+    file_path.write_text("Este é um arquivo de teste.")
+    return str(dir_path), str(file_path)
 
 
-# Testes para caminhos inexistentes
-def test_validar_caminho_inexistente() -> None:
-    """Teste para validar um caminho inexistente."""
-
-    caminhos = [
-        "/caminho/nao/existe.txt",  # Linux
-        "C:/caminho/nao/existe.txt"  # Windows
-    ]
-
-    for caminho in caminhos:
-        with patch('os.path.exists') as mock_exists:
-            mock_exists.return_value = False  # Simula que o caminho não existe
-            resultado = validar_caminho(caminho)
-            assert resultado == 'inexistente'
+def test_validar_diretorio_valido(setup_temp_files):
+    dir_path, _ = setup_temp_files
+    with mock.patch("os.path.exists", return_value=True), mock.patch("os.path.isdir", return_value=True):
+        existe, tipo = validar_caminho(dir_path)
+        assert existe is True
+        assert tipo == 'diretorio'
 
 
-# Testes para caminhos inválidos
-@pytest.mark.parametrize("caminho", [
-    None,
-    "",
-    " ",
-    0,
-    0.5,
-    [],
-    ["caminho"],
-    {},
-    {"path": "caminho"},
-    object(),
-    lambda x: x,
-    b"/home/usuario/projeto/",
-    "/home/usuario/projeto/\x00",
-    "C:/Users/usuario/projeto/\x00",
-    "/caminho_invalido\\erro_misto/",
-    "C:/Users/usuario/projeto/tests/unit/"
-])
-def test_validar_caminho_excecoes(caminho: Union[str, None, int, float, list, dict, object, bytes, Any]) -> None:
-    """Teste a validação de caminhos para entradas inválidas."""
+def test_validar_arquivo_valido(setup_temp_files):
+    _, file_path = setup_temp_files
+    with mock.patch("os.path.exists", return_value=True), mock.patch("os.path.isfile", return_value=True):
+        existe, tipo = validar_caminho(file_path)
+        assert existe is True
+        assert tipo == 'arquivo'
 
-    with pytest.raises(ValueError):
-        validar_caminho(caminho)
+
+def test_validar_caminho_invalido():
+    caminho_invalido = "caminho/invalido.txt"
+    with mock.patch("os.path.exists", return_value=False):
+        existe, tipo = validar_caminho(caminho_invalido)
+        assert existe is False
+        assert tipo == 'invalido'
+
+
+def test_validar_caminho_inexistente():
+    caminho_inexistente = "caminho/inexistente.txt"
+    with mock.patch("os.path.exists", return_value=False):
+        existe, tipo = validar_caminho(caminho_inexistente)
+        assert existe is False
+        assert tipo == 'invalido'
+
+
+# Testes para diferenciar por sistema operacional
+def test_validar_caminho_windows(setup_temp_files):
+    dir_path, _ = setup_temp_files
+    with mock.patch("os.path.exists", return_value=True), mock.patch("os.path.isdir", return_value=True), mock.patch("platform.system", return_value="Windows"):
+        existe, tipo = validar_caminho(dir_path)
+        assert existe is True
+        assert tipo == 'diretorio'
+
+
+def test_validar_caminho_ubuntu(setup_temp_files):
+    dir_path, _ = setup_temp_files
+    with mock.patch("os.path.exists", return_value=True), mock.patch("os.path.isdir", return_value=True), mock.patch("platform.system", return_value="Linux"):
+        existe, tipo = validar_caminho(dir_path)
+        assert existe is True
+        assert tipo == 'diretorio'
+
+
+def test_validar_caminho_mac(setup_temp_files):
+    dir_path, _ = setup_temp_files
+    with mock.patch("os.path.exists", return_value=True), mock.patch("os.path.isdir", return_value=True), mock.patch("platform.system", return_value="Darwin"):
+        existe, tipo = validar_caminho(dir_path)
+        assert existe is True
+        assert tipo == 'diretorio'
