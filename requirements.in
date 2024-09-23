@@ -1,6 +1,7 @@
-flask
-pytest
-pytest-cov
 bandit
 flake8
+flask
+pip-audit
 pre-commit
+pytest
+pytest-cov

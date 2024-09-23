@@ -61,6 +61,7 @@ jobs:
       if: success()  # Executa apenas se a etapa anterior for bem-sucedida
       run: |
         source .venv/bin/activate
+        pip install pip-audit  # Certifique-se de que pip-audit esteja instalado
         pip-audit
 
     - name: Run pre-commit
