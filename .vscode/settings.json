@@ -10,11 +10,13 @@
         "Diretorio",
         "excecoes",
         "extensao",
+        "levelname",
         "localizacao",
         "pytest",
         "repositorio",
         "usecases",
         "usuario",
+        "validacao",
         "venv"
     ],
     "wolf.disableHotModeWarning": true

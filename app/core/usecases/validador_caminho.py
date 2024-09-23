@@ -1,29 +1,28 @@
-# app/core/usecases/validador_caminho.py
+import os
+import logging
 
-from typing import Union
+# Configuração do logger
+logging.basicConfig(
+    filename='app/logs/validacao.log',  # Caminho do arquivo de log
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 
-def validar_caminho(caminho: Union[str, None]) -> None:
-    """Valida um caminho de arquivo ou diretório.
-
-    Lança ValueError se o caminho for inválido.
+def validar_caminho(caminho):
     """
-    if caminho is None or isinstance(caminho, (int, float, list, dict, object)):
-        raise ValueError("Caminho deve ser uma string válida.")
+    Valida se um caminho existe e se é um diretório ou um arquivo.
 
-    if isinstance(caminho, str):
-        if '\x00' in caminho:
-            raise ValueError("Caminho contém caractere nulo.")
-
-        if caminho.strip() == "":
-            raise ValueError("Caminho não pode ser vazio ou apenas espaços.")
-
-        # Exemplos de caminhos inválidos específicos
-        if caminho == "C:/Users/usuario/projeto/tests/unit/":
-            raise ValueError("Caminho específico inválido.")
-
-        # Outras validações que você deseja implementar
-        # ...
-
+    :param caminho: O caminho a ser validado.
+    :return: Uma tupla contendo (existe, tipo), onde tipo é 'diretorio', 'arquivo' ou 'invalido'.
+    """
+    if os.path.exists(caminho):
+        if os.path.isdir(caminho):
+            logging.info(f"'{caminho}' é um diretório.")
+            return True, 'diretorio'
+        elif os.path.isfile(caminho):
+            logging.info(f"'{caminho}' é um arquivo.")
+            return True, 'arquivo'
     else:
-        raise ValueError("Caminho deve ser uma string.")
+        logging.warning(f"'{caminho}' não existe.")
+        return False, 'invalido'
