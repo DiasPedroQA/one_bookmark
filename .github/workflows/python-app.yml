@@ -25,28 +25,31 @@ jobs:
         run: |
           python -m venv .venv
           # Ativar o ambiente virtual e instalar dependências
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            .venv\Scripts\pip install -r requirements.txt  # Windows
-          else
+          if [ "${{ runner.os }}" == "Linux" ] || [ "${{ runner.os }}" == "macOS" ]; then
             .venv/bin/pip install -r requirements.txt  # Linux/MacOS
+          else
+            .venv\Scripts\pip install -r requirements.txt  # Windows
           fi
+        shell: bash  # Especifica o shell para Linux e MacOS
 
       - name: Run Flake8 Linting
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            .venv\Scripts\flake8 app  # Windows
-          else
+          if [ "${{ runner.os }}" == "Linux" ] || [ "${{ runner.os }}" == "macOS" ]; then
             .venv/bin/flake8 app  # Linux/MacOS
+          else
+            .venv\Scripts\flake8 app  # Windows
           fi
+        shell: bash  # Especifica o shell para Linux e MacOS
 
       - name: Run Unit Tests
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            .venv\Scripts\pytest --cov=app --cov-report=xml  # Windows
-          else
+          if [ "${{ runner.os }}" == "Linux" ] || [ "${{ runner.os }}" == "macOS" ]; then
             .venv/bin/pytest --cov=app --cov-report=xml  # Linux/MacOS
+          else
+            .venv\Scripts\pytest --cov=app --cov-report=xml  # Windows
           fi
         continue-on-error: true  # Permite continuar mesmo que os testes falhem
+        shell: bash  # Especifica o shell para Linux e MacOS
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
@@ -58,19 +61,21 @@ jobs:
 
       - name: Check for Vulnerabilities
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            .venv\Scripts\pip-audit  # Windows
-          else
+          if [ "${{ runner.os }}" == "Linux" ] || [ "${{ runner.os }}" == "macOS" ]; then
             .venv/bin/pip-audit  # Linux/MacOS
+          else
+            .venv\Scripts\pip-audit  # Windows
           fi
+        shell: bash  # Especifica o shell para Linux e MacOS
 
       - name: Run Pre-Commit Hooks
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            .venv\Scripts\pre-commit run --all-files  # Windows
-          else
+          if [ "${{ runner.os }}" == "Linux" ] || [ "${{ runner.os }}" == "macOS" ]; then
             .venv/bin/pre-commit run --all-files  # Linux/MacOS
+          else
+            .venv\Scripts\pre-commit run --all-files  # Windows
           fi
+        shell: bash  # Especifica o shell para Linux e MacOS
 
   deploy:
     runs-on: ubuntu-latest  # O deploy será executado em Ubuntu
