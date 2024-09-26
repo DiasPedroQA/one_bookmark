@@ -1,23 +1,24 @@
-name: Python Application CI
+name: CI/CD with Conditional Deploy
 
 on:
   push:
     branches:
-      - main
+      - main  # O workflow é acionado em push para a branch main
   pull_request:
     branches:
-      - main
+      - main  # O workflow também é acionado em pull requests
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
     strategy:
       matrix:
-        python-version: ['3.12']
+        platform: [ubuntu-latest, macos-latest, windows-latest]  # Execução em várias plataformas
+        python-version: ['3.12', '3.8']  # Testa nas versões mais atual e anterior
+    runs-on: ${{ matrix.platform }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -38,15 +39,15 @@ jobs:
           .venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Lint Code
+      - name: Run Flake8 Linting
         run: |
           .venv/bin/activate
-          flake8 app
+          flake8 app  # Executa o linter no diretório app
 
       - name: Run Unit Tests
         run: |
           .venv/bin/activate
-          pytest --cov=app --cov-report=xml
+          pytest --cov=app --cov-report=xml  # Executa os testes com cobertura
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
@@ -60,9 +61,23 @@ jobs:
         run: |
           .venv/bin/activate
           pip install pip-audit
-          pip-audit
+          pip-audit  # Verifica vulnerabilidades nas dependências
 
       - name: Run Pre-Commit Hooks
         run: |
           .venv/bin/activate
-          pre-commit run --all-files
+          pre-commit run --all-files  # Executa os hooks de pré-commit
+
+  deploy:
+    runs-on: ubuntu-latest  # O deploy será executado em Ubuntu
+    needs: test  # O deploy depende da conclusão do job de testes
+    if: success()  # O deploy será executado apenas se os testes forem bem-sucedidos
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying application..."  # Comando de deploy
+          # Adicione aqui os comandos específicos de deploy, como copiar arquivos para o servidor, etc.
