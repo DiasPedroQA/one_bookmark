@@ -21,15 +21,16 @@ jobs:
         with:
           python-version: '3.12'  # Usando a versão mais atual do Python
 
+      # Altere a seção de instalação de dependências para o seguinte:
       - name: Install dependencies
         run: |
           python -m venv .venv
           # Ativar o ambiente virtual e instalar dependências
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
+          if ($env:RUNNER_OS -eq "Windows") {
             .venv\Scripts\pip install -r requirements.txt  # Windows
-          else
+          } else {
             .venv/bin/pip install -r requirements.txt  # Linux/MacOS
-          fi
+          }
 
       - name: Run Flake8 Linting
         run: |
