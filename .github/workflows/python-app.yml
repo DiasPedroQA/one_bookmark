@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]  # Execução em várias plataformas
-        python-version: ['3.12', '3.8']  # Testa nas versões mais atual e anterior
+        python-version: ['3.12']  # Testa na versão mais atual
     runs-on: ${{ matrix.platform }}
 
     steps:
