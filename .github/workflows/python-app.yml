@@ -4,16 +4,12 @@ on:
   push:
     branches:
       - main  # O workflow é acionado em push para a branch main
-  pull_request:
-    branches:
-      - main  # O workflow também é acionado em pull requests
 
 jobs:
   test:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]  # Execução em várias plataformas
-        python-version: ['3.12']  # Testa apenas na versão mais atual do Python
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -23,30 +19,33 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Cache pip dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          python-version: '3.12'  # Usando a versão mais atual do Python
 
       - name: Install dependencies
         run: |
           python -m venv .venv
-          # Ativar o ambiente virtual sem usar a ativação de shell
-          .venv/bin/pip install -r requirements.txt
+          # Ativar o ambiente virtual e instalar dependências
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            .venv\Scripts\pip install -r requirements.txt  # Windows
+          else
+            .venv/bin/pip install -r requirements.txt  # Linux/MacOS
+          fi
 
       - name: Run Flake8 Linting
         run: |
-          .venv/bin/flake8 app  # Executa o linter no diretório app
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            .venv\Scripts\flake8 app  # Windows
+          else
+            .venv/bin/flake8 app  # Linux/MacOS
+          fi
 
       - name: Run Unit Tests
         run: |
-          .venv/bin/pytest --cov=app --cov-report=xml  # Executa os testes com cobertura
-        continue-on-error: true  # Permite continuar mesmo que os testes falhem
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            .venv\Scripts\pytest --cov=app --cov-report=xml  # Windows
+          else
+            .venv/bin/pytest --cov=app --cov-report=xml  # Linux/MacOS
+          fi
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
@@ -54,16 +53,23 @@ jobs:
           file: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
-        if: success()
+        if: success()  # Executa apenas se os testes forem bem-sucedidos
 
       - name: Check for Vulnerabilities
         run: |
-          .venv/bin/pip install pip-audit
-          .venv/bin/pip-audit  # Verifica vulnerabilidades nas dependências
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            .venv\Scripts\pip-audit  # Windows
+          else
+            .venv/bin/pip-audit  # Linux/MacOS
+          fi
 
       - name: Run Pre-Commit Hooks
         run: |
-          .venv/bin/pre-commit run --all-files  # Executa os hooks de pré-commit
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            .venv\Scripts\pre-commit run --all-files  # Windows
+          else
+            .venv/bin/pre-commit run --all-files  # Linux/MacOS
+          fi
 
   deploy:
     runs-on: ubuntu-latest  # O deploy será executado em Ubuntu
@@ -77,4 +83,3 @@ jobs:
       - name: Deploy to production
         run: |
           echo "Deploying application..."  # Comando de deploy
-          # Adicione aqui os comandos específicos de deploy, como copiar arquivos para o servidor, etc.
