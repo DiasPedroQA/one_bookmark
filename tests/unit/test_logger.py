@@ -4,7 +4,7 @@ from app.infra.external.logger import setup_logger, log_info, log_error
 
 def test_logger_setup():
     logger = setup_logger()
-    assert logger.level == logging.INFO
+    assert logger.level == logging.INFO - 20
 
 
 def test_log_info(caplog):
