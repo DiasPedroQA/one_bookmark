@@ -13,6 +13,7 @@ disable=
       R0903,  # Too few public methods (0/2)
       W0221,  # Arguments-differ
       W0703,  # Catching too general exception Exception
+      E1102,  # not-callable
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
