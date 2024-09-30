@@ -2,6 +2,7 @@
 
 # Minhas desabilitações pessoais
 disable=
+      C0115,  # missing-class-docstring
       C0116,  # missing-function-docstring
       E0015,  # unrecognized-option
       C0114,  # missing-module-docstring
@@ -9,8 +10,8 @@ disable=
       C0209,  # Consider-using-f-string
       C0321,  # Multiple-statements
       W0221,  # Arguments-differ
-      R0801   # Duplicate-code
-
+      R0801,  # Duplicate-code
+      R0903,  # Too few public methods (0/2)
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
