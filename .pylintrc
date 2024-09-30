@@ -2,16 +2,17 @@
 
 # Minhas desabilitações pessoais
 disable=
+      C0114,  # missing-module-docstring
       C0115,  # missing-class-docstring
       C0116,  # missing-function-docstring
-      E0015,  # unrecognized-option
-      C0114,  # missing-module-docstring
-      W0703,  # Catching too general exception Exception
       C0209,  # Consider-using-f-string
       C0321,  # Multiple-statements
-      W0221,  # Arguments-differ
+      E0015,  # unrecognized-option
+      E0401,  # Unable to import 'connection'
       R0801,  # Duplicate-code
       R0903,  # Too few public methods (0/2)
+      W0221,  # Arguments-differ
+      W0703,  # Catching too general exception Exception
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
