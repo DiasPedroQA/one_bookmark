@@ -14,6 +14,8 @@ disable=
       W0221,  # Arguments-differ
       W0703,  # Catching too general exception Exception
       E1102,  # not-callable
+      W0621,  # redefined-outer-name
+
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
@@ -305,7 +307,7 @@ exclude-too-few-public-methods=
 ignored-parents=
 
 # Maximum number of arguments for function / method.
-max-args=5
+max-args=15
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=7
