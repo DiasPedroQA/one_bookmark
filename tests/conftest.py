@@ -5,7 +5,8 @@ import sys
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from infra.db.settings.base import Base
+from src.infra.db.settings.base import Base
+
 
 # Adiciona o diretório src ao PYTHONPATH
 sys.path.insert(
