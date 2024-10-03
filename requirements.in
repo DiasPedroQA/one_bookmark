@@ -6,7 +6,6 @@ iniconfig
 isort
 mccabe
 mysql-connector-python
-mysql-connector-python-rf
 packaging
 platformdirs
 pluggy
