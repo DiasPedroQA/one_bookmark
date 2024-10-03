@@ -85,8 +85,8 @@ def test_arquivo_log_creation(test_db_session):
 
     # Verificações
     assert arquivo_log.id is not None
-    assert arquivo_log.processo == 'created'
-    assert arquivo_log.description == 'Arquivo criado'
+    assert arquivo_log.processo.in_ == 'created'
+    assert arquivo_log.description.in_ == 'Arquivo criado'
     assert arquivo_log.arquivo_id == test_arquivo.id
 
 
