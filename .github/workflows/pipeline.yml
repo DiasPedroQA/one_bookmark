@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main # Altere para o nome da sua branch principal, se necessário
+  pull_request:
+    branches:
+      - main # Altere para o nome da sua branch principal, se necessário
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: your_database_name
+        # Aguarda o banco de dados estar pronto
+        options: >-
+          --health-cmd "pg_isready -U user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9" # Altere para a versão do Python que você está usando
+
+      - name: Install dependencies
+        run: |
+          python -m venv one_venv
+          source one_venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run Pylint
+        run: |
+          source one_venv/bin/activate
+          pylint src/
+
+      - name: Run Tests
+        run: |
+          source one_venv/bin/activate
+          pytest tests/
