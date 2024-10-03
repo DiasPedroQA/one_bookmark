@@ -8,7 +8,6 @@ iniconfig==2.0.0
 isort==5.13.2
 mccabe==0.7.0
 mysql-connector-python==9.0.0
-mysql-connector-python-rf==2.2.2
 packaging==24.1
 pip-tools==7.4.1
 platformdirs==4.3.6
