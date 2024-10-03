@@ -1,23 +1,29 @@
 repos:
   - repo: local
     hooks:
+      # Pylint hook for linting Python code
       - id: pylint
         name: pylint
         entry: pylint
         language: system
         types: [python]
         args:
-          [
-            "-rn",                                        # Only display messages
-            "-sn",                                        # Don't display the score
-            "--rcfile=.pylintrc",                         # Link to your config file
-            "--load-plugins=pylint.extensions.docparams"  # Load an extension
-          ]
-  - repo: local
-    hooks:
+          - "-rn"  # Only display messages
+          - "-sn"  # Don't display the score
+          - "--rcfile=.pylintrc"  # Link to your config file
+          - "--load-plugins=pylint.extensions.docparams"  # Load an extension
+
+      # Hook to update requirements.txt after every commit
       - id: requirements
         name: requirements
-        entry: bash -c 'venv/bin/pip3 freeze > requirements.txt; git add requirements.txt'
+        entry: bash -c 'one_venv/bin/pip3 freeze > requirements.txt; git add requirements.txt'
         language: system
         pass_filenames: false
         stages: [commit]
+
+      # Hook to clean up __pycache__ and pytest cache
+      - id: clean-pycache
+        name: Clean pycache and pytest cache
+        entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
+        language: system
+        always_run: true

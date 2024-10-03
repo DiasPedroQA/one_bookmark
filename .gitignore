@@ -104,9 +104,11 @@ celerybeat.pid
 
 # Ambientes virtuais
 .env
-.venv/
 env/
+.venv/
 venv/
+.one_venv/
+one_venv
 ENV/
 env.bak/
 venv.bak/
@@ -151,3 +153,9 @@ htmlcov/
 
 # Verificação de segurança com Bandit
 .bandit/
+
+# Configurações novas e logs de testes
+novidades_e_testes.txt
+
+# Arquivo completo de inicialização do banco de dados
+init/complete_schema.sql

@@ -1,0 +1,21 @@
+# requirements.in
+astroid
+dill
+greenlet
+iniconfig
+isort
+mccabe
+mysql-connector-python
+mysql-connector-python-rf
+packaging
+platformdirs
+pluggy
+pylint
+PyMySQL
+pytest-cov
+pytest
+python-dotenv
+SQLAlchemy
+SQLAlchemy-Utils
+tomlkit
+typing_extensions

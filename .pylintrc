@@ -5,15 +5,14 @@ disable=
       C0114,  # missing-module-docstring
       C0115,  # missing-class-docstring
       C0116,  # missing-function-docstring
-      C0209,  # Consider-using-f-string
-      C0321,  # Multiple-statements
+      C0301,  # Bad line length (81/79)
+      E0401,  # Unable to import
+      E1102,  # Method could be a function
       E0015,  # unrecognized-option
-      E0401,  # Unable to import 'connection'
-      R0801,  # Duplicate-code
       R0903,  # Too few public methods (0/2)
+      R0917,  # Too many return statements (12/6)
+      W0012,  # Unnecessary semicolon
       W0221,  # Arguments-differ
-      W0703,  # Catching too general exception Exception
-      E1102,  # not-callable
       W0621,  # redefined-outer-name
 
 
