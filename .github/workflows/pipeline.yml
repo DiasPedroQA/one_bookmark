@@ -46,7 +46,7 @@ jobs:
       - name: Run Pylint
         run: |
           source one_venv/bin/activate
-          pylint src/
+          pylint init/ src/ tests/
 
       - name: Run Tests
         run: |

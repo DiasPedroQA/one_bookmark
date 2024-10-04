@@ -99,7 +99,7 @@ class DBConnectionHandler:
         self.session = session_maker()
         return self
 
-    def __exit__(self, exc_type: type | None, exc_val: Exception | None, exc_tb: Any) -> None:
+    def __exit__(self, exc_type: None, exc_val: None, exc_tb: Any) -> None:
         """Fecha a sessão de banco de dados ao sair
         do gerenciador de contexto."""
         if self.session:
