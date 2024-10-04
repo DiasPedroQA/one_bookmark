@@ -1,8 +1,10 @@
 -- schema.sql
 
+-- Criação do banco de dados
 CREATE DATABASE IF NOT EXISTS db_gerenciador_arquivos;
 USE db_gerenciador_arquivos;
 
+-- Tabela para armazenar pastas
 CREATE TABLE IF NOT EXISTS tb_folders (
     folder_id INT AUTO_INCREMENT PRIMARY KEY,
     folder_nome VARCHAR(255) NOT NULL,
@@ -11,19 +13,21 @@ CREATE TABLE IF NOT EXISTS tb_folders (
     folder_data_modificacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Tabela para armazenar arquivos
 CREATE TABLE IF NOT EXISTS tb_files (
     file_id INT AUTO_INCREMENT PRIMARY KEY,
     file_caminho_absoluto VARCHAR(500) NOT NULL,
     file_nome VARCHAR(255) NOT NULL,
     file_tamanho BIGINT,
-    file_extensao VARCHAR(10),
+    file_extensao VARCHAR(10) CHECK (file_extensao IN ('csv', 'docx', 'html', 'json', 'pdf', 'txt')), -- Restringe as extensões válidas
     file_is_deletado BOOLEAN DEFAULT FALSE,
     folder_id INT,
-    FOREIGN KEY (folder_id) REFERENCES tb_folders(folder_id),
+    FOREIGN KEY (folder_id) REFERENCES tb_folders(folder_id) ON DELETE CASCADE,
     file_data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     file_data_modificacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Tabela para armazenar logs de ações
 CREATE TABLE IF NOT EXISTS tb_logs (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     log_acao VARCHAR(50) NOT NULL,
@@ -33,6 +37,7 @@ CREATE TABLE IF NOT EXISTS tb_logs (
     log_data_acoes TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Triggers para registrar ações em tb_folders
 DELIMITER $$
 CREATE TRIGGER after_insert_folder
 AFTER INSERT ON tb_folders
@@ -67,6 +72,7 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- Triggers para registrar ações em tb_files
 DELIMITER $$
 CREATE TRIGGER after_insert_file
 AFTER INSERT ON tb_files
@@ -101,6 +107,7 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- Criação de índices para melhorar a performance
 CREATE INDEX idx_folder_id ON tb_files (folder_id);
 CREATE INDEX idx_file_is_deletado ON tb_files (file_is_deletado);
 CREATE INDEX idx_folder_is_deletado ON tb_folders (folder_is_deletado);

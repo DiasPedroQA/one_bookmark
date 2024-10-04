@@ -1,89 +1,99 @@
-# src/infra/db/repositories/arquivo_repository_impl.py
+#  src/infra/db/repositories/arquivo_repository_impl.py
+
+"""
+Módulo que contém a implementação do repositório de arquivos, responsável
+por inserir e manipular registros de arquivos no banco de dados.
+"""
 
 from datetime import datetime
-from src.infra.db.entities.arquivo_entity import EntidadeArquivo
-from src.infra.db.settings.connection import DBConnectionHandler
+from infra.db.entities.arquivo_entity import EntidadeArquivo
+from infra.db.settings.connection import DBConnectionHandler
 
 
 class ArquivoRepositorio:
     """
-    Inserts a new file record into the database.
+    Classe que implementa o repositório de arquivos, permitindo a inserção
+    e manipulação de registros no banco de dados.
 
-    Args:
-        id_pasta (int): The ID of the folder the file belongs to.
-        nome_arquivo (str): The name of the file.
-        extensao_arquivo (str): The file extension.
-        tamanho_arquivo_bytes (int): The size of the file in bytes.
-        is_excluido (bool, optional): Indicates if the file has been deleted.
-            Defaults to False.
-        data_criacao (datetime, optional): The creation date of the file.
-            If not provided, the current datetime is used.
-        data_atualizacao (datetime, optional): The last update date of the
-            file. If not provided, the current datetime is used.
-
-    Returns:
-        EntidadeArquivo: The newly created file record.
-
-    Raises:
-        ValueError: If there is an error inserting the file record.
+    Métodos:
+        inserir_arquivo: Insere um novo arquivo no banco de dados.
     """
+
     @classmethod
     def inserir_arquivo(
-        cls, id_pasta: int, nome_arquivo: str, extensao_arquivo: str,
-        tamanho_arquivo_bytes: int, is_excluido: bool = False,
+        cls,
+        file_caminho_absoluto: str,
+        file_nome: str,
+        extensao_arquivo: str,
+        tamanho_arquivo_bytes: int | None = 0,
+        is_excluido: bool = False,
         data_criacao: datetime | None = None,
         data_atualizacao: datetime | None = None
-            ) -> EntidadeArquivo:
+    ) -> EntidadeArquivo:
         """
-        Inserts a new file record into the database.
+        Insere um novo registro de arquivo no banco de dados.
 
-        Args:
-            id_pasta (int): The ID of the folder the file belongs to.
-            nome_arquivo (str): The name of the file.
-            extensao_arquivo (str): The file extension.
-            tamanho_arquivo_bytes (int): The size of the file in bytes.
-            is_excluido (bool, optional): Indicates if the file has been
-                deleted. Defaults to False.
-            data_criacao (datetime, optional): The creation date of the file.
-                If not provided, the current datetime is used.
-            data_atualizacao (datetime, optional): The last update date of
-                the file. If not provided, the current datetime is used.
+        Parâmetros:
+            file_caminho_absoluto (str): O caminho absoluto do arquivo.
+            file_nome (str): O nome do arquivo.
+            extensao_arquivo (str): A extensão do arquivo.
+            tamanho_arquivo_bytes (int): O tamanho do arquivo em bytes.
+            is_excluido (bool, opcional): Indica se o arquivo foi excluído.
+                O valor padrão é False.
+            data_criacao (datetime, opcional): A data de criação do arquivo.
+                Se não for fornecida, a data e hora atual serão usadas.
+            data_atualizacao (datetime, opcional): A data de última atualização
+                do arquivo. Se não for fornecida, a data e hora atual serão usadas.
 
-        Returns:
-            EntidadeArquivo: The newly created file record.
+        Retorna:
+            EntidadeArquivo: O novo registro de arquivo criado.
 
-        Raises:
-            ValueError: If there is an error inserting the file record.
+        Levanta:
+            ValueError: Se ocorrer um erro ao tentar inserir o arquivo no
+            banco de dados.
         """
-        if data_criacao is None:
-            data_criacao = datetime.now()
-        if data_atualizacao is None:
-            data_atualizacao = datetime.now()
 
-        novo_registro = None
+        # Garantindo que data_criacao e data_atualizacao tenham valores válidos
+        data_criacao = data_criacao or datetime.now()
+        data_atualizacao = data_atualizacao or datetime.now()
 
+        # Garantindo que o novo_registro seja sempre instanciado corretamente
+        novo_registro: EntidadeArquivo
+
+        # Gerenciando a sessão do banco de dados
         with DBConnectionHandler() as db_handler:
             try:
+                # Criação do novo registro de arquivo
                 novo_registro = EntidadeArquivo(
-                    id_pasta=id_pasta,
-                    nome_arquivo=nome_arquivo,
-                    extensao_arquivo=extensao_arquivo,
-                    tamanho_arquivo_bytes=tamanho_arquivo_bytes,
-                    is_excluido=is_excluido,
-                    data_criacao=data_criacao,
-                    data_atualizacao=data_atualizacao)
+                    file_caminho_absoluto=file_caminho_absoluto,
+                    file_nome=file_nome,
+                    file_extensao=extensao_arquivo,
+                    file_tamanho=tamanho_arquivo_bytes,
+                    file_is_deletado=is_excluido,
+                    # file_data_criacao=data_criacao,
+                    # file_data_modificacao=data_atualizacao
+                )
 
-                if db_handler.session is not None:
+                # Adicionando e 'commitando' o novo registro
+                if db_handler.session:
                     db_handler.session.add(novo_registro)
                     db_handler.session.commit()
                 else:
-                    raise ValueError(
-                        "Sessão do banco de dados não está disponível.")
+                    raise ValueError("Sessão do banco de dados não está disponível.")
 
-            except Exception as exception:
-                if db_handler.session is not None:
+            except (ValueError, TypeError) as exception:
+                # Realiza rollback em caso de falha
+                if db_handler.session:
                     db_handler.session.rollback()
-                raise ValueError(
-                    f"Erro ao inserir arquivo: {exception}") from exception
+                raise ValueError(f"Erro ao inserir arquivo '{file_nome}': {exception}") from exception
+            except Exception as exception:
+                # Trata outras exceções de forma genérica
+                if db_handler.session:
+                    db_handler.session.rollback()
+                raise ValueError(f"Erro inesperado ao inserir arquivo: {exception}") from exception
+            finally:
+                # Garantindo que a sessão seja fechada após o uso
+                if db_handler.session:
+                    db_handler.session.close()
 
         return novo_registro

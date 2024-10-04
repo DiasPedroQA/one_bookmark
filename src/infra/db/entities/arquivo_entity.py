@@ -1,100 +1,109 @@
 #  src/infra/db/entities/arquivo_entity.py
+
+import enum
+from typing import Optional
 from sqlalchemy import (
-    Column, Integer, String, ForeignKey, Boolean, Enum, TIMESTAMP
+    Column, Integer, String, ForeignKey, Boolean, TIMESTAMP
 )
-from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 # Criação da base declarativa
 Base = declarative_base()
 
 
+# Enum para representar as extensões de arquivo
+class ExtensaoArquivoEnum(enum.Enum):
+    CSV = 'csv'
+    DOCX = 'docx'
+    HTML = 'html'
+    JSON = 'json'
+    PDF = 'pdf'
+    TXT = 'txt'
+
+
 class EntidadeArquivo(Base):
     """
-    Representação da tabela 'tb_arquivos' no banco de dados.
+    Representação da tabela 'tb_files' no banco de dados.
 
     Esta classe mapeia a tabela responsável por armazenar
     os arquivos no sistema.
-
-    Atributos:
-        id_arquivo (int): Identificador único do arquivo.
-        id_pasta (int): Referência à pasta à qual o arquivo pertence.
-        nome_arquivo (str): Nome do arquivo.
-        extensao_arquivo (str): Extensão do arquivo
-            (html, pdf, json, csv, txt, docx, etc.).
-        tamanho_arquivo_bytes (int): Tamanho do arquivo em bytes.
-        is_excluido (bool): Indica se o arquivo foi excluído.
-        data_criacao (datetime): Data de criação do arquivo.
-        data_atualizacao (datetime): Data da última atualização do arquivo.
     """
-    __tablename__ = "tb_arquivos"
 
-    id_arquivo = Column(Integer, primary_key=True, autoincrement=True)
-    id_pasta = Column(
-        Integer, ForeignKey("tb_pastas.id", ondelete="CASCADE"),
-        nullable=False, index=True
-    )
-    nome_arquivo = Column(String(255), nullable=False)
-    extensao_arquivo = Column(
-        Enum('txt', 'docx', 'pdf', 'html', 'csv', name='enum_file_extension'),
-        nullable=False
-    )
-    tamanho_arquivo_bytes = Column(Integer, nullable=False, default=0)
-    is_excluido = Column(Boolean, default=False)
-    data_criacao = Column(
-        TIMESTAMP, server_default=func.now(),
-        onupdate=func.now()
-    )
-    data_atualizacao = Column(
-        TIMESTAMP, server_default=func.now(),
-        onupdate=func.now()
-    )
+    __tablename__ = 'tb_files'
 
-    # Relacionamento com a tabela EntidadePasta (tb_pastas)
-    pasta = relationship(
-        "EntidadePasta",
-        back_populates="arquivos"
-        )
+    file_id = Column(Integer, primary_key=True, autoincrement=True)
+    file_caminho_absoluto = Column(String(500), nullable=False)
+    file_nome = Column(String(255), nullable=False)
+    file_tamanho = Column(Integer, nullable=True)
+    file_extensao = Column(String(10), nullable=True)  # Poderia usar ExtensaoArquivoEnum
+    file_is_deletado = Column(Boolean, default=False)
+    folder_id = Column(
+        Integer, ForeignKey('tb_folders.folder_id', ondelete='CASCADE'), nullable=True)
+    file_data_criacao = Column(TIMESTAMP, server_default=func.now())
+    file_data_modificacao = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now())
+
+    # Relacionamento com a tabela EntidadePasta (tb_folders)
+    pasta = relationship("EntidadePasta", back_populates="arquivos", lazy="joined")
+
+    def __init__(
+        self, file_caminho_absoluto: str, file_nome: str, file_tamanho: Optional[int] = 0,
+        file_extensao: Optional[str] = "", folder_id: Optional[int] = 0,
+        file_is_deletado: bool = False
+    ) -> None:
+        """
+        Inicializa uma nova instância da classe EntidadeArquivo.
+
+        Parâmetros:
+            file_caminho_absoluto (str): Caminho absoluto do arquivo.
+            file_nome (str): Nome do arquivo.
+            file_tamanho (int, opcional): Tamanho do arquivo em bytes. Padrão é None.
+            file_extensao (str, opcional): Extensão do arquivo. Padrão é None.
+            folder_id (int, opcional): ID da pasta à qual o arquivo pertence. Padrão é None.
+            file_is_deletado (bool): Indica se o arquivo foi excluído. Padrão é False.
+        """
+        self.file_caminho_absoluto = file_caminho_absoluto
+        self.file_nome = file_nome
+        self.file_tamanho = file_tamanho
+        self.file_extensao = file_extensao
+        self.folder_id = folder_id
+        self.file_is_deletado = file_is_deletado
 
     def __repr__(self) -> str:
         """
         Retorna uma representação em string da instância da classe.
 
-        A representação inclui os atributos principais da entidade,
-        permitindo fácil identificação e depuração.
-
         Returns:
             str: Representação em string da EntidadeArquivo.
         """
         return (
-            f"EntidadeArquivo(id_arquivo={self.id_arquivo}, "
-            f"nome_arquivo='{self.nome_arquivo}', "
-            f"extensao_arquivo='{self.extensao_arquivo}', "
-            f"id_pasta={self.id_pasta}, "
-            f"tamanho_arquivo_bytes={self.tamanho_arquivo_bytes}, "
-            f"is_excluido={self.is_excluido}, "
-            f"data_criacao={self.data_criacao}, "
-            f"data_atualizacao={self.data_atualizacao})"
+            f"EntidadeArquivo(file_id={self.file_id}, "
+            f"file_nome='{self.file_nome}', "
+            f"file_extensao='{self.file_extensao}', "
+            f"file_caminho_absoluto='{self.file_caminho_absoluto}', "
+            f"file_tamanho={self.file_tamanho}, "
+            f"file_is_deletado={self.file_is_deletado}, "
+            f"folder_id={self.folder_id}, "
+            f"file_data_criacao={self.file_data_criacao}, "
+            f"file_data_modificacao={self.file_data_modificacao})"
         )
 
     def to_dict(self) -> dict:
         """
         Converte a instância da entidade em um dicionário.
 
-        Isso pode ser útil para serialização e outras operações
-        que requerem um formato de dicionário.
-
         Returns:
             dict: Representação da entidade como um dicionário.
         """
         return {
-            "id_arquivo": self.id_arquivo,
-            "id_pasta": self.id_pasta,
-            "nome_arquivo": self.nome_arquivo,
-            "extensao_arquivo": self.extensao_arquivo,
-            "tamanho_arquivo_bytes": self.tamanho_arquivo_bytes,
-            "is_excluido": self.is_excluido,
-            # "data_criacao": self.data_criacao.isoformat() if self.data_criacao else None,  # noqa: E501
-            # "data_atualizacao": self.data_atualizacao.isoformat() if self.data_atualizacao else None,  # noqa: E501
+            "file_id": self.file_id,
+            "file_caminho_absoluto": self.file_caminho_absoluto,
+            "file_nome": self.file_nome,
+            "file_tamanho": self.file_tamanho,
+            "file_extensao": self.file_extensao,
+            "file_is_deletado": self.file_is_deletado,
+            "folder_id": self.folder_id,
+            "file_data_criacao": self.file_data_criacao,
+            "file_data_modificacao": self.file_data_modificacao,
         }

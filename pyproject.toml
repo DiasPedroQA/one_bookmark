@@ -1,0 +1,86 @@
+# Este arquivo configura diversas ferramentas para o projeto.
+# pyproject.toml é usado para gerenciar dependências e outras configurações
+# de ferramentas, como Black, Flake8, isort, Pylint, pytest, etc.
+
+[tool.black]
+# Configura o formatador Black.
+# Definir o tamanho máximo da linha para 99 caracteres.
+line-length = 99
+
+# Modifica a string de aspas duplas para aspas simples.
+skip-string-normalization = true
+
+# Exclui arquivos ou diretórios específicos do processo de formatação.
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | \.mypy_cache
+  | \.tox
+  | \.pytest_cache
+  | \.vscode
+  | migrations
+)/
+'''
+
+[tool.flake8]
+# Configura o Flake8, um analisador de código para detecção de erros e estilo.
+# Define o tamanho máximo das linhas para 99 caracteres.
+max-line-length = 99
+
+# Ignorar os seguintes códigos de erro. Ajuste de acordo com suas necessidades.
+# E501: Linha muito longa.
+# W503: Quebra de linha antes de um operador binário.
+ignore = ["E501", "W503"]
+
+# Especifica arquivos ou diretórios a serem excluídos do Flake8.
+exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist"
+
+[tool.pylint]
+# Configura o Pylint para análise de código estático.
+# Aqui você pode ajustar as opções semelhantes ao seu arquivo .pylintrc.
+
+# Define o tamanho máximo da linha para 99 caracteres, semelhante ao Black.
+max-line-length = 99
+
+# Ignorar os seguintes erros, ajustados para o seu projeto.
+# C0114: Faltando docstring de módulo.
+# C0115: Faltando docstring de classe.
+# C0116: Faltando docstring de função.
+# E1101: Atributos ausentes (geralmente erro falso com SQLAlchemy).
+disable = ["C0114", "C0115", "C0116", "E1101"]
+
+[tool.isort]
+# Configura o isort para organizar automaticamente os imports.
+profile = "black"
+line_length = 99
+
+# Ajuste as seções para garantir que os pacotes locais sejam corretamente organizados.
+known_third_party = ["flask", "sqlalchemy", "pytest"]
+known_first_party = ["src"]
+
+# Exclui diretórios para isort.
+skip = ["migrations"]
+
+[tool.mypy]
+# Configurações para o mypy (verificação de tipo).
+# Ignora arquivos de migrations e cache.
+exclude = '/migrations/|/venv/|/tests/'
+
+# Ativa o modo estrito para verificação de tipos mais rigorosa.
+strict = true
+
+# Exige a verificação de tipo em funções sem anotação.
+disallow_untyped_defs = true
+
+# Ignorar erros de tipagem para bibliotecas externas.
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+# Configurações para o pytest.
+# Configurações do pytest podem ser colocadas aqui para evitar um arquivo pytest.ini separado.
+minversion = "6.0"
+addopts = "--strict-markers --tb=short"
+testpaths = [
+    "tests",  # O diretório onde os testes estão localizados.
+]

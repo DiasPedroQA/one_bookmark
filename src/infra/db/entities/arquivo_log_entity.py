@@ -1,4 +1,6 @@
-# src/infra/db/entities/arquivo_log_entity.py
+#  src/infra/db/entities/arquivo_log_entity.py
+
+from datetime import datetime
 from sqlalchemy import (
     Column, Integer, ForeignKey,
     Text, TIMESTAMP, Enum
@@ -19,33 +21,40 @@ class ArquivoLogEntity(Base):
     Atributos:
         id (int): Identificador único do log.
         arquivo_id (int): Referência ao arquivo relacionado.
-        processo (str): Ação realizada no arquivo
-          (created, updated, deleted, restored).
+        processo (str): Ação realizada no arquivo (created, updated, deleted, restored).
         log_timestamp (datetime): Data e hora em que o log foi registrado.
-        description (str): Descrição adicional do log, se houver.
+        description (Optional[str]): Descrição adicional do log, se houver.
     """
+
     __tablename__ = 'tb_logs_arquivo'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    arquivo_id = Column(
+    id: Column[int] = Column(Integer, primary_key=True, autoincrement=True)
+    arquivo_id: Column[int] = Column(
         Integer,
         ForeignKey("tb_arquivos.id", ondelete="CASCADE"),
         nullable=False
     )
-    processo = Column(
+    processo: Column[str] = Column(
         Enum(
             'created', 'updated', 'deleted',
             'restored', name='enum_file_action'
         ),
         nullable=False
     )
-    log_timestamp = Column(TIMESTAMP, server_default=func.now())
-    description = Column(Text, nullable=True)
+    log_timestamp: Column[datetime] = Column(TIMESTAMP, server_default=func.now())
+    description: Column[str] = Column(Text, nullable=True)
 
     # Relacionamento com a tabela EntidadeArquivo
     arquivo = relationship("EntidadeArquivo", back_populates="logs")
 
     def __repr__(self) -> str:
+        """
+        Retorna a representação em string da entidade de log de arquivo, útil
+        para fins de depuração e logging.
+
+        Returns:
+            str: Representação textual do objeto ArquivoLogEntity.
+        """
         return (
             f"ArquivoLogEntity(id={self.id}, processo='{self.processo}', "
             f"log_timestamp={self.log_timestamp}, "

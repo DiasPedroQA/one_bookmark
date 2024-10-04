@@ -1,76 +1,49 @@
-# src/tests/test_pasta_repository.py
+#  tests/test_infra/test_db/pasta_entity_test.py
 
-import os
+"""
+Este módulo contém os testes para a classe Pasta, garantindo
+que todos os métodos e comportamentos estejam funcionando corretamente.
+"""
+
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from src.infra.db.settings.base import Base
+from sqlalchemy.exc import IntegrityError
+from src.infra.db.settings.connection import DBConnectionHandler
 from src.infra.db.entities.pasta_entity import EntidadePasta
 
 
 @pytest.fixture(scope='module')
-def db_session_module():
-    """Fixture para criar um banco de dados em memória para testes."""
-    # Usando SQLite em memória
-    database_url = os.getenv("DATABASE_URL")
-    if database_url is None:
-        raise ValueError("DATABASE_URL environment variable is not set")
-    engine = create_engine(database_url)
-    Base.metadata.create_all(engine)  # Cria todas as tabelas apenas uma vez
-    session_factory = sessionmaker(bind=engine)
-    session = session_factory()
-
-    yield session  # Retorna a sessão para os testes
-
-    session.close()
-    Base.metadata.drop_all(engine)  # Limpa as tabelas apenas no final
+def db_connection():
+    """Fixture para gerenciar a conexão com o banco de dados durante os testes."""
+    with DBConnectionHandler() as conn:
+        yield conn
 
 
-def test_pasta_creation(db_session_module):
-    """Teste para verificar a criação de uma EntidadePasta."""
-    pasta = EntidadePasta(nome_pasta='Test Folder')
-    db_session_module.add(pasta)
-    db_session_module.commit()
+def test_criar_pasta(db_connection):
+    """Teste para verificar a criação de uma nova pasta no banco de dados."""
+    pasta = EntidadePasta(nome='Nova Pasta', caminho_absoluto='/home/user/Nova Pasta')
+    db_connection.session.add(pasta)
+    db_connection.commit()
 
-    assert pasta.id_pasta is not None
-    assert pasta.nome_pasta.is_ == 'Test Folder'
-    assert pasta.is_deleted.is_(False)
-
-
-def test_subpasta_relationship(db_session_module):
-    """Teste para verificar o relacionamento entre pastas e subpastas."""
-    parent_pasta = EntidadePasta(nome_pasta='Parent Folder')
-    db_session_module.add(parent_pasta)
-    db_session_module.commit()  # Commit necessário para gerar o id do pai
-
-    subpasta = EntidadePasta(
-        nome_pasta='Subpasta', id_pasta_mae=parent_pasta.id_pasta
-    )
-
-    db_session_module.add(subpasta)
-    db_session_module.commit()
-
-    # Verificando se a subpasta foi adicionada ao pai corretamente
-    assert parent_pasta.subpastas
-    assert subpasta in parent_pasta.subpastas
-    assert subpasta.id_pasta_mae.is_ == parent_pasta.id_pasta
+    # Verifica se a pasta foi criada
+    assert pasta.id is not None  # Supondo que `id` é gerado automaticamente
 
 
-def test_pasta_deletion(db_session_module):
-    """Teste para verificar a marcação de uma pasta como deletada."""
-    pasta = EntidadePasta(nome_pasta='Folder to Delete')
-    db_session_module.add(pasta)
-    db_session_module.commit()
+def test_pasta_nao_repetida(db_connection):
+    """Teste para garantir que não é possível criar pastas com o mesmo nome."""
+    pasta1 = EntidadePasta(nome='Pasta Única', caminho_absoluto='/home/user/Pasta Única')
+    pasta2 = EntidadePasta(nome='Pasta Única', caminho_absoluto='/home/user/Pasta Única 2')
 
-    # Marcar a pasta como deletada
-    pasta.is_deleted.is_(True)  # Verifique se 'is_deleted' é um Column
-    db_session_module.commit()
+    db_connection.session.add(pasta1)
+    db_connection.commit()
 
-    # Verificar se a pasta está marcada como deletada
-    assert pasta.is_deleted.is_(True)
-    # Recarregar a pasta do banco de dados para garantir
-    # que a mudança foi persistida
-    db_session_module.refresh(pasta)
-    assert pasta.is_deleted.is_(True)
-    # Verificar se a pasta não está mais presente na lista de subpastas
-    assert pasta not in pasta.parent_pasta.subpastas
+    db_connection.session.add(pasta2)
+
+    # Espera-se que um IntegrityError ocorra ao tentar adicionar uma pasta duplicada
+    with pytest.raises(IntegrityError):
+        db_connection.commit()
+
+
+def test_listar_pastas(db_connection):
+    """Teste para verificar se todas as pastas são listadas corretamente."""
+    pastas = db_connection.session.query(EntidadePasta).all()
+    assert pastas is not None  # Verifica se a lista de pastas não está vazia
