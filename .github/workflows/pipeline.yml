@@ -17,15 +17,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # Instala o Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.12"
+          auto-update-conda: true
+          python-version: 3.12
+          activate-environment: miniconda_env
+          environment-file: environment.yml # Crie um arquivo environment.yml opcionalmente
 
       - name: Install dependencies
         run: |
-          python -m venv one_venv
-          source one_venv/bin/activate
+          conda activate miniconda_env
           pip install -r requirements.txt
 
       - name: Cache pip dependencies
@@ -45,25 +48,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # Instala o Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.12"
+          auto-update-conda: true
+          python-version: 3.12
+          activate-environment: miniconda_env
 
-      - name: Install dependencies
+      - name: Install linting dependencies
         run: |
-          python -m venv one_venv
-          source one_venv/bin/activate
+          conda activate miniconda_env
           pip install flake8 black
 
       - name: Run flake8
         run: |
-          source one_venv/bin/activate
+          conda activate miniconda_env
           flake8 src/ tests/
 
       - name: Check code format with Black
         run: |
-          source one_venv/bin/activate
+          conda activate miniconda_env
           black --check src/ tests/
 
   # Job para rodar testes com cobertura de código
@@ -77,7 +82,7 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_ROOT_PASSWORD: #R1040grau$
           MYSQL_DATABASE: db_gerenciador_arquivos
         options: >-
           --health-cmd "mysqladmin ping --silent"
@@ -89,20 +94,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # Instala o Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.12"
+          auto-update-conda: true
+          python-version: 3.12
+          activate-environment: miniconda_env
 
       - name: Install dependencies
         run: |
-          python -m venv one_venv
-          source one_venv/bin/activate
+          conda activate miniconda_env
           pip install pytest pytest-cov
 
       - name: Run tests with coverage
         run: |
-          source one_venv/bin/activate
+          conda activate miniconda_env
           pytest --cov=src --cov-report=xml --cov-report=term-missing tests/
 
       - name: Upload coverage report
@@ -120,14 +127,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # Instala o Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.12"
+          auto-update-conda: true
+          python-version: 3.12
+          activate-environment: miniconda_env
 
       - name: Install coverage and check minimum coverage
         run: |
-          python -m venv one_venv
-          source one_venv/bin/activate
+          conda activate miniconda_env
           pip install coverage
           coverage report --fail-under=80
