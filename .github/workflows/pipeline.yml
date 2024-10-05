@@ -24,7 +24,7 @@ jobs:
           auto-update-conda: true
           python-version: 3.12
           activate-environment: miniconda_env
-          environment-file: environment.yml # Crie um arquivo environment.yml opcionalmente
+          # environment-file: .github/workflows/pipeline.yml # Crie um arquivo .github/workflows/pipeline.yml opcionalmente
 
       - name: Install dependencies
         run: |
