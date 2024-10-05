@@ -3,7 +3,6 @@ import pytest
 from src.use_cases.folder_service import FolderService
 from domain.entidade_pasta import SQLTable_Pasta
 
-
 # Configuração do logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,7 +20,9 @@ def test_create_folder_path_with_absolute_path(db) -> None:
     assert isinstance(folder, SQLTable_Pasta)
     logger.info("ASSERT folder.path: %s", folder.path)
     # assert folder.path == "/home/pedro-pm-dias/Downloads"
-    logger.info("Teste test_create_folder_path_with_absolute_path concluído com sucesso.")
+    logger.info(
+        "Teste test_create_folder_path_with_absolute_path concluído com sucesso."
+    )
 
 
 def test_create_folder_path_with_relative_path(db) -> None:
@@ -49,7 +50,7 @@ def test_invalid_folder_path(db) -> None:
         folder_service.create_folder_path(db, "")
     logger.info("Erro esperado: %s", exc_info_empty.value)
 
-    assert str(exc_info_empty.value) == "O caminho da pasta não pode ser uma string vazia", (
+    assert (str(exc_info_empty.value)) == "O caminho da pasta não pode ser uma string vazia", (
         f"Erro levantado com mensagem inesperada: {exc_info_empty.value}"
     )
 
@@ -59,9 +60,9 @@ def test_invalid_folder_path(db) -> None:
         folder_service.create_folder_path(db, "/caminho/inválido/<>:*?|")
     logger.info("Erro esperado: %s", exc_info_invalid_chars.value)
 
-    assert str(exc_info_invalid_chars.value) == "O caminho da pasta contém caracteres inválidos", (
-        f"Erro levantado com mensagem inesperada: {exc_info_invalid_chars.value}"
-    )
+    assert str(exc_info_invalid_chars.value) == (
+        "O caminho da pasta contém caracteres inválidos"
+    ), f"Erro levantado com mensagem inesperada: {exc_info_invalid_chars.value}"
 
     # Testa se um ValueError é levantado ao tentar criar um caminho muito longo
     long_path = "a" * 256  # Um exemplo de caminho muito longo
@@ -70,9 +71,9 @@ def test_invalid_folder_path(db) -> None:
         folder_service.create_folder_path(db, long_path)
     logger.info("Erro esperado: %s", exc_info_long_path.value)
 
-    assert str(exc_info_long_path.value) == "O caminho da pasta é muito longo", (
-        f"Erro levantado com mensagem inesperada: {exc_info_long_path.value}"
-    )
+    assert str(exc_info_long_path.value) == (
+        "O caminho da pasta é muito longo"
+    ), f"Erro levantado com mensagem inesperada: {exc_info_long_path.value}"
 
     # # Testa se um ValueError é levantado para caminhos que não são strings
     # logger.info("Testando caminho que não é uma string")
@@ -80,7 +81,7 @@ def test_invalid_folder_path(db) -> None:
     #     folder_service.create_folder_path(db, '12345')
     # logger.info("Erro esperado: %s", exc_info_non_string_path.value)
 
-    # assert str(exc_info_non_string_path.value) == "O caminho da pasta deve ser uma string", (
-    #     f"Erro levantado com mensagem inesperada: {exc_info_non_string_path.value}"
-    # )
+    # assert str(exc_info_non_string_path.value) == (
+    #     "O caminho da pasta deve ser uma string"
+    # ), f"Erro levantado com mensagem inesperada: {exc_info_non_string_path.value}"
     # logger.info("Teste test_invalid_folder_path concluído com sucesso.")

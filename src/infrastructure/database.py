@@ -17,7 +17,9 @@ logger = logging.getLogger(__name__)
 DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
 
 if not DATABASE_URL:
-    logger.error("A URL do banco de dados não foi encontrada. Verifique suas variáveis de ambiente.")
+    logger.error(
+        "A URL do banco de dados não foi encontrada. Verifique suas variáveis de ambiente."
+    )
     raise ValueError("A URL do banco de dados não pode ser vazia.")
 
 engine = create_engine(DATABASE_URL, echo=True)
