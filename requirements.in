@@ -4,6 +4,7 @@ dill
 greenlet
 fastapi
 iniconfig
+dotenv
 isort
 mccabe
 packaging
