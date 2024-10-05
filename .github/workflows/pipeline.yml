@@ -9,33 +9,28 @@ on:
       - main
 
 jobs:
-  # Job de instalação e configuração do ambiente
+  # Setup do ambiente Miniconda
   setup:
     runs-on: ubuntu-latest
-
     steps:
+      # Fase 1: Baixar o código
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # Instala o Miniconda
+      
+      # Fase 2: Configurar Miniconda e Python
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
+          environment-file: environment.yml
           python-version: 3.12
+          activate-environment: miniconda_env
+      
+      # Fase 3: Instalar dependências do projeto
+      - name: Install dependencies
+        run: conda activate miniconda_env && pip install -r requirements.txt
 
-      - name: Initialize Conda
-        run: |
-          conda init bash
-          source ~/.bashrc
-          conda create --name miniconda_env python=3.12 -y
-
-      - name: Activate Conda Environment and Install Dependencies
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          pip install -r requirements.txt
-
+      # Fase 4: Cache das dependências pip
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
@@ -44,47 +39,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-  # Job de linting e formatação
+  # Linting e formatação do código
   lint:
     runs-on: ubuntu-latest
     needs: setup
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # Instala o Miniconda
+      
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
-          python-version: 3.12
-
-      - name: Initialize Conda
-        run: |
-          conda init bash
-          source ~/.bashrc
-          conda create --name miniconda_env python=3.12 -y
-
-      - name: Activate Conda Environment and Install Linting Dependencies
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          pip install flake8 black
+          activate-environment: miniconda_env
+      
+      - name: Install linting tools
+        run: conda activate miniconda_env && pip install flake8 black
 
       - name: Run flake8
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          flake8 src/ tests/
+        run: conda activate miniconda_env && flake8 src/ tests/
 
       - name: Check code format with Black
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          black --check src/ tests/
+        run: conda activate miniconda_env && black --check src/ tests/
 
-  # Job para rodar testes com cobertura de código
+  # Testes e cobertura de código
   test:
     runs-on: ubuntu-latest
     needs: lint
@@ -95,7 +73,7 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: #R1040grau$
+          MYSQL_ROOT_PASSWORD: '#R1040grau$'
           MYSQL_DATABASE: db_gerenciador_arquivos
         options: >-
           --health-cmd "mysqladmin ping --silent"
@@ -107,30 +85,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Instala o Miniconda
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
-          python-version: 3.12
+          activate-environment: miniconda_env
 
-      - name: Initialize Conda
-        run: |
-          conda init bash
-          source ~/.bashrc
-          conda create --name miniconda_env python=3.12 -y
-
-      - name: Activate Conda Environment and Install Test Dependencies
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          pip install pytest pytest-cov
+      - name: Install testing tools
+        run: conda activate miniconda_env && pip install pytest pytest-cov
 
       - name: Run tests with coverage
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          pytest --cov=src --cov-report=xml --cov-report=term-missing tests/
+        run: conda activate miniconda_env && pytest --cov=src --cov-report=xml --cov-report=term-missing tests/
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -138,7 +103,7 @@ jobs:
           name: coverage-report
           path: coverage.xml
 
-  # Job de verificação de cobertura mínima
+  # Verificação da cobertura mínima
   coverage:
     runs-on: ubuntu-latest
     needs: test
@@ -147,22 +112,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Instala o Miniconda
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
-          python-version: 3.12
+          activate-environment: miniconda_env
 
-      - name: Initialize Conda
-        run: |
-          conda init bash
-          source ~/.bashrc
-          conda create --name miniconda_env python=3.12 -y
+      - name: Install coverage tool
+        run: conda activate miniconda_env && pip install coverage
 
-      - name: Activate Conda Environment and Check Minimum Coverage
-        run: |
-          source ~/.bashrc
-          conda activate miniconda_env
-          pip install coverage
-          coverage report --fail-under=80
+      - name: Check minimum coverage
+        run: conda activate miniconda_env && coverage report --fail-under=80
