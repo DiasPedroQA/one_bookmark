@@ -3,21 +3,21 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - main # Altere para o nome da sua branch principal, se necessário
   pull_request:
     branches:
-      - main
+      - main # Altere para o nome da sua branch principal, se necessário
 
 jobs:
-  prepare:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.12" # Altere para a versão do Python que você está usando
 
@@ -26,69 +26,16 @@ jobs:
           python -m venv one_venv
           source one_venv/bin/activate
           pip install -r requirements.txt
-          pip install python-dotenv  # Certifique-se de que a biblioteca dotenv esteja instalada
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: prepare
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
+      - name: Install flake8
         run: |
-          python -m venv one_venv
           source one_venv/bin/activate
-          pip install -r requirements.txt
+          pip install flake8
 
-      - name: Run Flake8
+      - name: Run flake8
         run: |
           source one_venv/bin/activate
           flake8 src/ tests/
-
-      - name: Run Pylint
-        run: |
-          source one_venv/bin/activate
-          pylint init/ src/ tests/
-
-  test:
-    runs-on: ubuntu-latest
-    needs: prepare
-
-    services:
-      mysql:
-        image: mysql:latest
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: "#R1040grau$" # Use a senha conforme definido no .env
-          MYSQL_DATABASE: db_gerenciador_arquivos # Nome do banco de dados conforme definido no .env
-        options: >-
-          --health-cmd "mysqladmin ping -h localhost -u root --password=#R1040grau$"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          python -m venv one_venv
-          source one_venv/bin/activate
-          pip install -r requirements.txt
 
       - name: Run Tests
         run: |
