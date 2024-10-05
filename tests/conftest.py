@@ -1,69 +1,41 @@
-#  tests/conftest.py
-
-"""
-Configuração de fixtures para testes com pytest.
-
-Este módulo configura o ambiente de teste utilizando o banco de dados
-SQLite em memória. Ele fornece duas fixtures:
-- `db_engine`: Cria e gerencia uma conexão com o banco de dados.
-- `db_session`: Gerencia a criação e encerramento de sessões para cada teste.
-"""
+# Configuração do pytest para testes com banco de dados
 
 import os
-import sys
-from typing import Generator
+from dotenv import load_dotenv
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import sessionmaker, Session
-from src.infra.db.settings.base import Base
+from sqlalchemy.orm import sessionmaker
+from src.infrastructure.database import Base
 
-# Adiciona o diretório src ao PYTHONPATH
-sys.path.insert(
-    0, os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), '../src')))
+# Carregar as variáveis de ambiente do arquivo .env
+load_dotenv()
 
+# Banco de dados de teste usando as variáveis de ambiente ou SQLite em memória
+DB_DRIVER = os.getenv("DB_DRIVER", "mysql+pymysql")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "#R1040grau$")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_NAME = os.getenv("DB_NAME", "db_gerenciador_arquivos")
 
-@pytest.fixture(scope='module')
-def db_engine() -> Generator[Engine, None, None]:
-    """
-    Fixture que cria uma conexão de teste com o banco de dados em memória.
+# URL de conexão com o banco de dados para SQLAlchemy
+SQLALCHEMY_DATABASE_URL = f"{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-    Esta função configura um banco de dados SQLite em memória, que será
-    usado para testes. Ela cria as tabelas necessárias antes dos testes e
-    remove-as ao final.
+# Caso queira usar SQLite em memória para testes, descomente a linha abaixo
+# SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
-    Yields:
-        Engine: A engine do SQLAlchemy conectada ao banco de dados em memória.
-    """
-    engine = create_engine('sqlite:///:memory:')
-    Base.metadata.create_all(engine)
-    yield engine
-    Base.metadata.drop_all(engine)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-@pytest.fixture(scope='function')
-def db_session(db_engine: Engine) -> Generator[Session, None, None]:
-    """
-    Fixture que cria uma nova sessão de banco de dados para cada teste.
-
-    Para cada teste, esta função cria uma nova conexão e uma transação.
-    Ao final do teste, a transação é revertida e a conexão é fechada.
-
-    Args:
-        db_engine (Engine): A engine do SQLAlchemy criada pela fixture `db_engine`.
-
-    Yields:
-        Session: Uma nova sessão de banco de dados para ser usada nos testes.
-    """
-    connection = db_engine.connect()
-    transaction = connection.begin()
-    this_session = sessionmaker(bind=connection)
-    session = this_session()
-
-    yield session
-
-    session.close()
-    transaction.rollback()
-    connection.close()
+# Configura o banco de dados de teste antes de rodar os testes
+@pytest.fixture(scope="function")
+def db():
+    Base.metadata.create_all(bind=engine)
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        Base.metadata.drop_all(bind=engine)

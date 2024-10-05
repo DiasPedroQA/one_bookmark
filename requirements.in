@@ -1,20 +1,23 @@
-# requirements.in
+# Ferramentas para análise estática de código
 astroid
 dill
 greenlet
+fastapi
 iniconfig
 isort
 mccabe
-mysql-connector-python
 packaging
 platformdirs
 pluggy
 pylint
-PyMySQL
-pytest-cov
-pytest
+
+# Ferramentas para testes
+pytest-cov  # Para cobertura de testes
+pytest      # Framework de testes
+
+# Gerenciamento de variáveis de ambiente
 python-dotenv
-SQLAlchemy
-SQLAlchemy-Utils
+
+# Outras dependências
 tomlkit
 typing_extensions

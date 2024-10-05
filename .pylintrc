@@ -5,6 +5,7 @@ extension-pkg-allow-list=mysql.connector
 
 # Minhas desabilitações pessoais
 disable=
+      C0103,  # invalid-name
       C0114,  # missing-module-docstring
       C0115,  # missing-class-docstring
       C0116,  # missing-function-docstring
@@ -12,6 +13,7 @@ disable=
       E0401,  # Unable to import
       E1102,  # Method could be a function
       E0015,  # unrecognized-option
+      R0902,  # Too many branches (12/12)
       R0903,  # Too few public methods (0/2)
       R0917,  # Too many return statements (12/6)
       W0012,  # Unnecessary semicolon
