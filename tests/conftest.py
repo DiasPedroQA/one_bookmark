@@ -21,8 +21,12 @@ DB_NAME = os.getenv("DB_NAME", "db_gerenciador_arquivos")
 # URL de conexão com o banco de dados para SQLAlchemy
 SQLALCHEMY_DATABASE_URL = f"{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-# Caso queira usar SQLite em memória para testes, descomente a linha abaixo
-# SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+# Debug: Verificar a URL do banco de dados
+print("SQLALCHEMY_DATABASE_URL:", SQLALCHEMY_DATABASE_URL)
+
+# Verifique se a URL não está vazia
+if not SQLALCHEMY_DATABASE_URL:
+    raise ValueError("A URL do banco de dados não pode ser vazia.")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
