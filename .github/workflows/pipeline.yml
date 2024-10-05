@@ -23,8 +23,13 @@ jobs:
         with:
           auto-update-conda: true
           python-version: 3.12
-          activate-environment: miniconda_env
-          # environment-file: .github/workflows/pipeline.yml # Crie um arquivo .github/workflows/pipeline.yml opcionalmente
+
+      - name: Initialize Conda
+        run: |
+          conda init bash
+          source ~/.bashrc
+          conda create --name miniconda_env python=3.12 -y
+          conda activate miniconda_env
 
       - name: Install dependencies
         run: |
@@ -54,7 +59,13 @@ jobs:
         with:
           auto-update-conda: true
           python-version: 3.12
-          activate-environment: miniconda_env
+
+      - name: Initialize Conda
+        run: |
+          conda init bash
+          source ~/.bashrc
+          conda create --name miniconda_env python=3.12 -y
+          conda activate miniconda_env
 
       - name: Install linting dependencies
         run: |
@@ -100,7 +111,13 @@ jobs:
         with:
           auto-update-conda: true
           python-version: 3.12
-          activate-environment: miniconda_env
+
+      - name: Initialize Conda
+        run: |
+          conda init bash
+          source ~/.bashrc
+          conda create --name miniconda_env python=3.12 -y
+          conda activate miniconda_env
 
       - name: Install dependencies
         run: |
@@ -133,7 +150,13 @@ jobs:
         with:
           auto-update-conda: true
           python-version: 3.12
-          activate-environment: miniconda_env
+
+      - name: Initialize Conda
+        run: |
+          conda init bash
+          source ~/.bashrc
+          conda create --name miniconda_env python=3.12 -y
+          conda activate miniconda_env
 
       - name: Install coverage and check minimum coverage
         run: |
