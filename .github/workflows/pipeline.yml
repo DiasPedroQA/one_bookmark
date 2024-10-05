@@ -29,10 +29,10 @@ jobs:
           conda init bash
           source ~/.bashrc
           conda create --name miniconda_env python=3.12 -y
-          conda activate miniconda_env
 
-      - name: Install dependencies
+      - name: Activate Conda Environment and Install Dependencies
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           pip install -r requirements.txt
 
@@ -65,20 +65,22 @@ jobs:
           conda init bash
           source ~/.bashrc
           conda create --name miniconda_env python=3.12 -y
-          conda activate miniconda_env
 
-      - name: Install linting dependencies
+      - name: Activate Conda Environment and Install Linting Dependencies
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           pip install flake8 black
 
       - name: Run flake8
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           flake8 src/ tests/
 
       - name: Check code format with Black
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           black --check src/ tests/
 
@@ -117,15 +119,16 @@ jobs:
           conda init bash
           source ~/.bashrc
           conda create --name miniconda_env python=3.12 -y
-          conda activate miniconda_env
 
-      - name: Install dependencies
+      - name: Activate Conda Environment and Install Test Dependencies
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           pip install pytest pytest-cov
 
       - name: Run tests with coverage
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           pytest --cov=src --cov-report=xml --cov-report=term-missing tests/
 
@@ -156,10 +159,10 @@ jobs:
           conda init bash
           source ~/.bashrc
           conda create --name miniconda_env python=3.12 -y
-          conda activate miniconda_env
 
-      - name: Install coverage and check minimum coverage
+      - name: Activate Conda Environment and Check Minimum Coverage
         run: |
+          source ~/.bashrc
           conda activate miniconda_env
           pip install coverage
           coverage report --fail-under=80
