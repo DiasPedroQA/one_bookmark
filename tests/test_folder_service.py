@@ -20,9 +20,7 @@ def test_create_folder_path_with_absolute_path(db) -> None:
     assert isinstance(folder, SQLTable_Pasta)
     logger.info("ASSERT folder.path: %s", folder.path)
     # assert folder.path == "/home/pedro-pm-dias/Downloads"
-    logger.info(
-        "Teste test_create_folder_path_with_absolute_path concluído com sucesso."
-    )
+    logger.info("Teste test_create_folder_path_with_absolute_path concluído com sucesso.")
 
 
 def test_create_folder_path_with_relative_path(db) -> None:
@@ -50,7 +48,9 @@ def test_invalid_folder_path(db) -> None:
         folder_service.create_folder_path(db, "")
     logger.info("Erro esperado: %s", exc_info_empty.value)
 
-    assert (str(exc_info_empty.value)) == "O caminho da pasta não pode ser uma string vazia", (
+    assert (
+        str(exc_info_empty.value)
+    ) == "O caminho da pasta não pode ser uma string vazia", (
         f"Erro levantado com mensagem inesperada: {exc_info_empty.value}"
     )
 
