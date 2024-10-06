@@ -58,6 +58,7 @@ jobs:
 
       - name: Use cached virtual environment
         run: |
+          python -m venv venv
           source venv/bin/activate
 
       - name: Run flake8
