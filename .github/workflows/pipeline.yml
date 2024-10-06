@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # Setup do ambiente virtual
+  # Setup do ambiente virtual e instalação de dependências
   setup:
     runs-on: ubuntu-latest
     steps:
@@ -40,6 +40,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      - name: Cache virtual environment
+        uses: actions/cache@v4
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-venv-
+
   # Linting e formatação do código
   lint:
     runs-on: ubuntu-latest
@@ -48,22 +56,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create and activate virtual environment
+      - name: Use cached virtual environment
         run: |
-          python -m venv venv
           source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
 
       - name: Run flake8
-        run: |
-          source venv/bin/activate
-          flake8 src/ tests/
+        run: flake8 src/ tests/
 
       - name: Check code format with Black
-        run: |
-          source venv/bin/activate
-          black --check src/ tests/
+        run: black --check src/ tests/
 
   # Testes e cobertura de código
   test:
@@ -88,17 +89,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create and activate virtual environment
+      - name: Use cached virtual environment
         run: |
-          python -m venv venv
           source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
 
       - name: Run tests with coverage
-        run: |
-          source venv/bin/activate
-          pytest --cov=src --cov-fail-under=80
+        run: pytest --cov=src --cov-fail-under=80
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
