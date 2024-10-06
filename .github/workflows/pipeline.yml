@@ -45,11 +45,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Run flake8
-        run: flake8 src/ tests/
+        run: |
+          source venv/bin/activate
+          flake8 src/ tests/
 
       - name: Check code format with Black
-        run: black --check src/ tests/
+        run: |
+          source venv/bin/activate
+          black --check src/ tests/
 
   # Testes e cobertura de código
   test:
