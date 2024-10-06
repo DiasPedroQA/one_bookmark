@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.infrastructure.database import Base
+from infra.db.database import Base
 
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()

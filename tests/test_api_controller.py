@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from src.interface.api_controller import APIController
-from src.infrastructure.database import Base
+from src.infrastructure.db_mysql.database import Base
 
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()

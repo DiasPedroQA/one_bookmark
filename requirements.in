@@ -4,7 +4,7 @@ dill
 greenlet
 fastapi
 iniconfig
-dotenv
+python-dotenv
 isort
 mccabe
 packaging
