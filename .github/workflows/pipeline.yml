@@ -25,14 +25,13 @@ jobs:
       
       - name: Install dependencies
         run: |
-          conda install --file requirements.txt  # Se tiver pacotes disponíveis via conda
-          python -m pip install --upgrade pip
-          pip uninstall argcomplete -y
-          pip install pip-tools
-          pip-compile requirements.in
-          pip-sync requirements.txt
-          pip install flake8 black pytest pytest-cov
-      
+          python -m pip install --upgrade pip --user
+          pip uninstall argcomplete -y --user  # Se for necessário
+          pip install pip-tools --user
+          pip-compile requirements.in --user
+          pip-sync requirements.txt --user
+          pip install flake8 black pytest pytest-cov --user
+
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
