@@ -19,13 +19,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'  # Defina a versão do Python desejada
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pip-tools
           pip-compile requirements.in
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
           pip-sync requirements.txt
           pip install flake8 black pytest pytest-cov
 
