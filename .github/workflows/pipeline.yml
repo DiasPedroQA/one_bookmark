@@ -9,20 +9,18 @@ on:
       - main
 
 jobs:
-  # Setup do ambiente Conda
+  # Setup do ambiente virtual
   setup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          auto-update-conda: true
-          activate-environment: miniconda_env
-          auto-activate-base: false
-      
+          python-version: '3.12'  # Defina a versão do Python desejada
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -46,9 +44,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Activate Conda environment
-        run: source ~/.bashrc && conda activate miniconda_env
 
       - name: Run flake8
         run: flake8 src/ tests/
@@ -79,11 +74,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Activate Conda environment
-        run: source ~/.bashrc && conda activate miniconda_env
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run tests with coverage
         run: |
+          source venv/bin/activate
           pytest --cov=src --cov-fail-under=80
 
       - name: Upload coverage report
