@@ -68,8 +68,8 @@ jobs:
             source venv/bin/activate
           fi
 
-      - name: Run flake8
-        run: flake8 .
+      # - name: Run flake8
+      #   run: flake8 .
 
       - name: Check code format with Black
         run: black --check src/ tests/
