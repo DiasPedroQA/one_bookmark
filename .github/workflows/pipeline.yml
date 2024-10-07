@@ -69,7 +69,7 @@ jobs:
           fi
 
       - name: Run flake8
-        run: flake8 src/ tests/
+        run: flake8 .
 
       - name: Check code format with Black
         run: black --check src/ tests/
