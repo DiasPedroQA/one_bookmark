@@ -155,8 +155,6 @@ htmlcov/
 .bandit/
 
 # Configurações novas e logs de testes
-# Quero impedir este arquivo de ser envado para o Github, mas nao consigo, pode me ajudar?
-# No momento que eu tento fazer um commit, ele me mostra o arquivo tarefas_tecnicas.txt no github junto com os outros arquivos. E eu não gostaria que isso acontecesse.
 tarefas_tecnicas.txt
 
 # Arquivo completo de inicialização do banco de dados
