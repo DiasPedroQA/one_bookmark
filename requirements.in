@@ -4,8 +4,8 @@
 # Para análise estática de código
 astroid
 dill
-greenlet
 flake8
+greenlet
 iniconfig
 isort
 mccabe
@@ -18,13 +18,19 @@ pylint
 python-dotenv
 
 # Ferramentas para testes
-pytest-cov  # Para cobertura de testes
 pytest      # Framework de testes
+pytest-cov  # Para cobertura de testes
 
 # Outras dependências
 # Ferramentas para gerenciamento de variáveis de ambiente
-typing_extensions
 tomlkit
+typing_extensions
 
 # Framework web
 fastapi
+
+# ORM para banco de dados
+SQLAlchemy
+
+# Ferramentas de parsing HTML
+beautifulsoup4
