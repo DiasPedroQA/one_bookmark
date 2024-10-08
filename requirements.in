@@ -1,10 +1,12 @@
+# requirements.in - Arquivo de dependências
 # Ferramentas para análise estática de código
+
+# Para análise estática de código
 astroid
 dill
 greenlet
-fastapi
+flake8
 iniconfig
-python-dotenv
 isort
 mccabe
 packaging
@@ -12,13 +14,17 @@ platformdirs
 pluggy
 pylint
 
+# Para gerenciamento de variáveis de ambiente
+python-dotenv
+
 # Ferramentas para testes
 pytest-cov  # Para cobertura de testes
 pytest      # Framework de testes
 
-# Gerenciamento de variáveis de ambiente
-python-dotenv
-
 # Outras dependências
-tomlkit
+# Ferramentas para gerenciamento de variáveis de ambiente
 typing_extensions
+tomlkit
+
+# Framework web
+fastapi
