@@ -16,7 +16,7 @@ repos:
       # Hook to update requirements.txt after every commit
       - id: requirements
         name: requirements
-        entry: bash -c 'one_venv/bin/pip3 freeze > requirements.txt; git add requirements.txt'
+        entry: bash -c 'venv/bin/pip3 freeze > requirements.txt; git add requirements.txt'
         language: system
         pass_filenames: false
         stages: [commit]
