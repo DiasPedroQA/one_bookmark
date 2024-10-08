@@ -46,7 +46,7 @@ A **One Bookmark** tem como finalidade:
 3. **Instale as dependências**:
 
    ```bash
-   pip3 install -r requirements.txt
+   pip install -r requirements.txt
    ```
 
 4. **Configuração do Banco de Dados** (se aplicável):

@@ -32,7 +32,7 @@ jobs:
           pip-sync requirements.txt
           pip3 install flake8 black pytest pytest-cov
 
-      - name: Cache pip3 dependencies
+      - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
