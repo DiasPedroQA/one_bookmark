@@ -156,6 +156,12 @@ htmlcov/
 
 # Configurações novas e logs de testes
 tarefas_tecnicas.txt
+src/interface/api_controller.py
+src/infrastructure/db/database.py
+src/domain/folder_path.py
+src/domain/entidade_pasta.py
+tests/conftest.py
+tests/test_api_controller.py
 
 # Arquivo completo de inicialização do banco de dados
 init/complete_schema.sql

@@ -2,10 +2,11 @@
 
 import os
 from dotenv import load_dotenv
-import pytest
+# import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from infra.db.database import Base
+# from src.infrastructure.database import Base
+
 
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -33,13 +34,13 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# Configura o banco de dados de teste antes de rodar os testes
-@pytest.fixture(scope="function")
-def db():
-    Base.metadata.create_all(bind=engine)
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        Base.metadata.drop_all(bind=engine)
+# # Configura o banco de dados de teste antes de rodar os testes
+# @pytest.fixture(scope="function")
+# def db():
+#     Base.metadata.create_all(bind=engine)
+#     db = TestingSessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
+#         Base.metadata.drop_all(bind=engine)
