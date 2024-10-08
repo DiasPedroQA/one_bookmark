@@ -15,24 +15,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pip-tools
+          python -m pip3 install --upgrade pip
+          pip3 install pip-tools
           pip-compile requirements.in
           python -m venv venv
           source venv/bin/activate
-          pip install -r requirements.txt
+          pip3 install -r requirements.txt
           pip-sync requirements.txt
-          pip install flake8 black pytest pytest-cov
+          pip3 install flake8 black pytest pytest-cov
 
-      - name: Cache pip dependencies
+      - name: Cache pip3 dependencies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -62,12 +62,12 @@ jobs:
             echo "venv directory not found, recreating virtual environment"
             python -m venv venv
             source venv/bin/activate
-            pip install -r requirements.txt
+            pip3 install -r requirements.txt
           else
             echo "venv found, activating"
             source venv/bin/activate
           fi
-          pip install flake8 black
+          pip3 install flake8 black
 
       - name: Run flake8
         run: |
@@ -108,7 +108,7 @@ jobs:
             echo "venv directory not found, recreating virtual environment"
             python -m venv venv
             source venv/bin/activate
-            pip install -r requirements.txt
+            pip3 install -r requirements.txt
           else
             echo "venv found, activating"
             source venv/bin/activate
@@ -117,6 +117,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           source venv/bin/activate
+          pip3 install pytest pytest-cov
           pytest --cov=src --cov-fail-under=80
 
       - name: Upload coverage report

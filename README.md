@@ -1,6 +1,6 @@
 # `README.md`
 
-```md
+````md
 # One Bookmark - API para Manipulação de Arquivos HTML
 
 Este repositório contém o código-fonte da **One Bookmark**, uma API em Python desenvolvida para manipular e processar arquivos HTML. O projeto utiliza TDD (Desenvolvimento Orientado a Testes) com `pytest` e `coverage` para garantir a qualidade e cobertura de testes.
@@ -34,16 +34,19 @@ A **One Bookmark** tem como finalidade:
    git clone https://github.com/DiasPedroQA/one_bookmark.git
    cd one_bookmark
    ```
+````
 
 2. **Crie e ative o ambiente virtual com `venv`**:
+
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 
 3. **Instale as dependências**:
+
    ```bash
-   pip install -r requirements.txt
+   pip3 install -r requirements.txt
    ```
 
 4. **Configuração do Banco de Dados** (se aplicável):
@@ -64,10 +67,12 @@ Isso executará os testes unitários e gerará um relatório de cobertura de có
 Se você deseja contribuir com o desenvolvimento da **One Bookmark**, siga as diretrizes abaixo:
 
 - **Escrevendo testes**:
+
   - Certifique-se de cobrir novos recursos com testes unitários.
   - Utilize `pytest` e busque manter uma cobertura de testes alta com `pytest-cov`.
 
 - **Revisão de código**:
+
   - Todo código deve passar por revisão antes de ser aceito no repositório principal.
 
 - **Padrões de código**:
@@ -87,4 +92,7 @@ Fique à vontade para abrir issues ou enviar pull requests com sugestões e melh
 - [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/): Guia para trabalhar com a extração de dados de HTML.
 - [Pytest Documentation](https://docs.pytest.org/en/7.0.x/): Documentação oficial do framework de testes.
 - [Aprenda Markdown](https://github.com/tutorials/markdowndemo): Guia útil para escrever e formatar documentos em Markdown.
+
+```
+
 ```
