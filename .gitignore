@@ -165,3 +165,6 @@ tests/test_api_controller.py
 
 # Arquivo completo de inicialização do banco de dados
 init/complete_schema.sql
+.mypy_cache/
+.venv/
+.config/

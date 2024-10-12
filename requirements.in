@@ -1,36 +1,39 @@
 # requirements.in - Arquivo de dependências
-# Ferramentas para análise estática de código
+# Ferramentas para análise estática de código e linting
+astroid                # Biblioteca para análise de código
+flake8                 # Linter para verificação de estilo
+isort                  # Para organizar automaticamente imports
+mccabe                 # Verificador de complexidade de código
+pylint                 # Linter para análise de código
 
-# Para análise estática de código
-astroid
-dill
-flake8
-greenlet
-iniconfig
-isort
-mccabe
-packaging
-platformdirs
-pluggy
-pylint
+# Ferramentas de tipagem e verificação de tipos
+mypy                   # Ferramenta de verificação de tipos estática
 
-# Para gerenciamento de variáveis de ambiente
-python-dotenv
+# Gerenciamento de variáveis de ambiente
+python-dotenv          # Gerenciamento de variáveis de ambiente
 
 # Ferramentas para testes
-pytest      # Framework de testes
-pytest-cov  # Para cobertura de testes
-
-# Outras dependências
-# Ferramentas para gerenciamento de variáveis de ambiente
-tomlkit
-typing_extensions
+pytest                 # Framework de testes
+pytest-cov             # Ferramenta para cobertura de testes
 
 # Framework web
-fastapi
+fastapi                # Framework web para APIs rápidas
 
 # ORM para banco de dados
-SQLAlchemy
+SQLAlchemy             # ORM para banco de dados
 
 # Ferramentas de parsing HTML
-beautifulsoup4
+beautifulsoup4         # Biblioteca para parsing HTML
+
+# Formatação de código
+black                  # Ferramenta para formatação automática de código
+
+# Dependências auxiliares
+dill                   # Serialização de objetos Python
+greenlet               # Implementação de microthreads
+iniconfig              # Manipulação de arquivos .ini
+packaging              # Utilitários para manipulação de pacotes Python
+platformdirs           # Obtenção de diretórios específicos da plataforma
+pluggy                 # Sistema de plugins para Python
+tomlkit                # Manipulação de arquivos TOML
+typing_extensions      # Extensões para tipagem no Python

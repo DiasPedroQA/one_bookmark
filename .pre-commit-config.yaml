@@ -1,29 +1,47 @@
 repos:
+  # Black - Ferramenta de formatação de código
+  - repo: https://github.com/psf/black
+    rev: 22.3.0  # Atualizado para uma versão estável mais recente
+    hooks:
+      - id: black
+
+  # Flake8 - Ferramenta de linting para Python
+  - repo: https://github.com/pycqa/flake8
+    rev: 5.0.4  # Atualizado para uma versão mais recente
+    hooks:
+      - id: flake8
+
+  # MyPy - Verificação de tipos estática para Python
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991  # Atualizado para uma versão mais recente
+    hooks:
+      - id: mypy
+
+  # Pylint - Análise de código Python (configurado localmente)
   - repo: local
     hooks:
-      # Pylint hook for linting Python code
       - id: pylint
         name: pylint
         entry: pylint
         language: system
         types: [python]
         args:
-          - "-rn"  # Only display messages
-          - "-sn"  # Don't display the score
-          - "--rcfile=.pylintrc"  # Link to your config file
-          - "--load-plugins=pylint.extensions.docparams"  # Load an extension
+          - "-rn"  # Exibe apenas mensagens
+          - "-sn"  # Não exibe a pontuação
+          - "--rcfile=.pylintrc"  # Usa o arquivo .pylintrc para configuração
+          - "--load-plugins=pylint.extensions.docparams"  # Carrega a extensão para docstrings
 
-      # Hook to update requirements.txt after every commit
-      - id: requirements
-        name: requirements
-        entry: bash -c 'venv/bin/pip3 freeze > requirements.txt; git add requirements.txt'
+      # Hook para atualizar automaticamente o arquivo requirements.txt após cada commit
+      - id: update-requirements
+        name: Update requirements.txt
+        entry: bash -c 'pip freeze > requirements.txt && git add requirements.txt'
         language: system
-        pass_filenames: false
-        stages: [commit]
+        pass_filenames: false  # Ignora arquivos de entrada
+        stages: [pre-commit]  # Executa durante o commit
 
-      # Hook to clean up __pycache__ and pytest cache
+      # Limpeza de __pycache__ e caches do pytest
       - id: clean-pycache
         name: Clean pycache and pytest cache
         entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
         language: system
-        always_run: true
+        always_run: true  # Executa sempre que o pre-commit rodar

@@ -1,25 +1,4 @@
-[MASTER]
-extension-pkg-allow-list=mysql.connector
-
 [MAIN]
-
-# Minhas desabilitações pessoais
-disable=
-      C0103,  # invalid-name
-      C0114,  # missing-module-docstring
-      C0115,  # missing-class-docstring
-      C0116,  # missing-function-docstring
-      C0301,  # Bad line length (81/79)
-      E0401,  # Unable to import
-      E1102,  # Method could be a function
-      E0015,  # unrecognized-option
-      R0902,  # Too many branches (12/12)
-      R0903,  # Too few public methods (0/2)
-      R0917,  # Too many return statements (12/6)
-      W0012,  # Unnecessary semicolon
-      W0221,  # Arguments-differ
-      W0621,  # redefined-outer-name
-
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
@@ -110,7 +89,7 @@ persistent=yes
 
 # Resolve imports to .pyi stubs if available. May reduce no-member messages and
 # increase not-an-iterable messages.
-prefer-stubs=no
+# prefer-stubs=no
 
 # Minimum Python version to use for version dependent checks. Will default to
 # the version used to run pylint.
@@ -311,7 +290,7 @@ exclude-too-few-public-methods=
 ignored-parents=
 
 # Maximum number of arguments for function / method.
-max-args=15
+max-args=5
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=7
@@ -329,7 +308,7 @@ max-locals=15
 max-parents=7
 
 # Maximum number of positional arguments for function / method.
-max-positional-arguments=5
+# max-positional-arguments=5
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20
@@ -366,7 +345,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=99
+max-line-length=100
 
 # Maximum number of lines in a module.
 max-module-lines=1000
@@ -500,7 +479,7 @@ never-returning-functions=sys.exit,argparse.parse_error
 # Let 'consider-using-join' be raised when the separator to join on would be
 # non-empty (resulting in expected fixes of the type: ``"- " + " -
 # ".join(items)``)
-suggest-join-with-non-empty-separator=yes
+# suggest-join-with-non-empty-separator=yes
 
 
 [REPORTS]
