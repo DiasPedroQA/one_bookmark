@@ -26,8 +26,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pip-tools
           pip-compile requirements.in
-          python -m venv venv
-          source venv/bin/activate
+          python -m venv new_venv
+          source new_venv/bin/activate
           pip install -r requirements.txt
           pip-sync requirements.txt
           pip install flake8 black pytest pytest-cov
@@ -43,10 +43,10 @@ jobs:
       - name: Cache virtual environment
         uses: actions/cache@v4
         with:
-          path: venv
-          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+          path: new_venv
+          key: ${{ runner.os }}-new_venv-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-venv-
+            ${{ runner.os }}-new_venv-
 
   # Linting e formatação do código
   lint:
@@ -58,25 +58,25 @@ jobs:
 
       - name: Ensure virtual environment and dependencies
         run: |
-          if [ ! -d "venv" ]; then
-            echo "venv directory not found, recreating virtual environment"
-            python -m venv venv
-            source venv/bin/activate
+          if [ ! -d "new_venv" ]; then
+            echo "new_venv directory not found, recreating virtual environment"
+            python -m venv new_venv
+            source new_venv/bin/activate
             pip install -r requirements.txt
           else
-            echo "venv found, activating"
-            source venv/bin/activate
+            echo "new_venv found, activating"
+            source new_venv/bin/activate
           fi
           pip install flake8 black
 
       - name: Run flake8
         run: |
-          source venv/bin/activate
+          source new_venv/bin/activate
           flake8 src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
 
       - name: Check code format with Black
         run: |
-          source venv/bin/activate
+          source new_venv/bin/activate
           black --check src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
 
   # Testes e cobertura de código
@@ -104,19 +104,19 @@ jobs:
 
       - name: Use cached or recreate virtual environment
         run: |
-          if [ ! -d "venv" ]; then
-            echo "venv directory not found, recreating virtual environment"
-            python -m venv venv
-            source venv/bin/activate
+          if [ ! -d "new_venv" ]; then
+            echo "new_venv directory not found, recreating virtual environment"
+            python -m venv new_venv
+            source new_venv/bin/activate
             pip install -r requirements.txt
           else
-            echo "venv found, activating"
-            source venv/bin/activate
+            echo "new_venv found, activating"
+            source new_venv/bin/activate
           fi
 
       - name: Run tests with coverage
         run: |
-          source venv/bin/activate
+          source new_venv/bin/activate
           pip install pytest pytest-cov
           pytest --cov=src --cov-fail-under=80
 

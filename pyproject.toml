@@ -14,7 +14,7 @@ skip-string-normalization = true
 exclude = '''
 /(
     \.git
-  | \.venv
+  | \.new_venv
   | \.mypy_cache
   | \.tox
   | \.pytest_cache
@@ -65,7 +65,7 @@ skip = ["migrations"]
 [tool.mypy]
 # Configurações para o mypy (verificação de tipo).
 # Ignora arquivos de migrations e cache.
-exclude = '/migrations/|/venv/|/tests/'
+exclude = '/migrations/|/new_venv/|/tests/'
 
 # Ativa o modo estrito para verificação de tipos mais rigorosa.
 strict = true
