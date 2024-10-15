@@ -9,7 +9,7 @@ classe `ProcessadorCaminhos` para manipular os caminhos fornecidos.
 from aplicacao.servicos.processador_caminhos import ProcessadorCaminhos
 
 
-# pylint: disable=R0903  too-few-public-methods
+#  pylint: disable=R0903  too-few-public-methods
 class Inicializador:
     """
     A classe Inicializador é responsável por analisar e processar uma lista de caminhos.

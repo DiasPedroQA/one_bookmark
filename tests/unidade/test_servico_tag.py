@@ -131,7 +131,6 @@
 #     # Verifica se todas as tags foram processadas
 #     assert len(resultado) == len(dados_tags)
 
-# pylint: disable=C0301
 #     # Verifica as tags específicas
 #     assert_tag(
 #         resultado[0], {"tag_name": "A", "href": "https://cheatsheets.zip/index.html"}
