@@ -145,8 +145,7 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           pip install pytest
-          pytest pytest-cov
-          pytest --cov=src --cov-fail-under=80
+          pytest --cov=src --cov-report=xml --cov-fail-under=80
 
       # Fazer upload do relatório de cobertura
       - name: Upload coverage report
