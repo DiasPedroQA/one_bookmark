@@ -142,8 +142,9 @@ jobs:
       # Executar os testes com pytest e gerar cobertura
       - name: Run tests with coverage
         run: |
+          python -m venv .venv
           source .venv/bin/activate
-          pip install pytest pytest-cov
+          pytest pytest-cov
           pytest --cov=src --cov-fail-under=80
 
       # Fazer upload do relatório de cobertura
