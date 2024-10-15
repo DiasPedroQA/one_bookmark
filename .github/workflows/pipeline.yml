@@ -67,12 +67,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Ensure virtual environment and dependencies
-        run: |
-          echo "recreating virtual environment"
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install -r requirements.txt
+      # - name: Ensure virtual environment and dependencies
+      #   run: |
+      #     echo "recreating virtual environment"
+      #     python -m venv .venv
+      #     source .venv/bin/activate
+      #     pip install -r requirements.txt
 
       # Verificar se o ambiente virtual foi criado corretamente
       - name: Check virtual environment
