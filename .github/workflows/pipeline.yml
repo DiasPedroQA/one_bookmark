@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: "3.10"
 
       # Remover ambiente virtual antigo, se existir
       - name: Remove old virtual environment
@@ -39,7 +39,7 @@ jobs:
           source .venv/bin/activate
           pip install -r requirements.txt
           pip-sync requirements.txt
-          pip install flake8 black pytest pytest-cov
+          pip install flake8 black pytest pytest-cov sqlalchemy
 
       # Cache das dependências do pip
       - name: Cache pip dependencies
@@ -63,89 +63,59 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: setup
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Ensure virtual environment and dependencies
-      #   run: |
-      #     echo "recreating virtual environment"
-      #     python -m venv .venv
-      #     source .venv/bin/activate
-      #     pip install -r requirements.txt
-
-      # Verificar se o ambiente virtual foi criado corretamente
-      # - name: Check virtual environment
-      #   run: |
-      #     if [ ! -d ".venv" ]; then
-      #       echo "Virtual environment not found. Please run the setup job first."
-      #       exit 1
-      #     fi
-      #     echo "Virtual environment found."
-      #     # Verificar se o ambiente virtual está ativo
-      #     if [ -z "$VIRTUAL_ENV" ]; then
-      #       echo "Virtual environment not activated. Please activate the virtual environment."
-      #       exit 1
-      #     fi
+      # Reutilizar o ambiente virtual criado no job de setup
+      - name: Activate virtual environment
+        run: |
+          source .venv/bin/activate
 
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install black
           black --check src/* tests/*
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install flake8
           flake8 src/* tests/*
+
+      # Upload dos relatórios de linting
+      - name: Upload lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: flake8.log
 
   # Job para rodar os testes e coletar cobertura de código
   test:
     runs-on: ubuntu-latest
     needs: lint
 
-    services:
-      mysql:
-        image: mysql:latest
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_DATABASE: db_gerenciador_arquivos
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        options: >-
-          --health-cmd "mysqladmin ping --silent"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 3
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Use cached or recreate virtual environment
-      #   run: |
-      #     if [ ! -d ".venv" ]; then
-      #       echo ".venv directory not found, recreating virtual environment"
-      #       python -m venv .venv
-      #       source .venv/bin/activate
-      #       pip install -r requirements.txt
-      #     else
-      #       echo ".venv found, activating"
-      #       source .venv/bin/activate
-      #     fi
+      # Reutilizar o ambiente virtual do job de setup
+      - name: Activate virtual environment
+        run: |
+          source .venv/bin/activate
+
+      # Criar banco de dados SQLite para testes
+      - name: Setup SQLite database
+        run: |
+          echo "Configuring SQLite database for tests"
+          export DATABASE_URL="sqlite:///test_database.db"
 
       # Executar os testes com pytest e gerar cobertura
       - name: Run tests with coverage
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install pytest
-          pytest --cov=src --cov-fail-under=80
+          pytest --cov=src --cov-report=xml --cov-fail-under=80
+          cp .coverage coverage.xml
 
       # Fazer upload do relatório de cobertura
       - name: Upload coverage report
@@ -153,3 +123,12 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+
+      # Publicar o resultado da cobertura
+      - name: Publish coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          flags: unittests
+          name: codecov-coverage
