@@ -75,18 +75,18 @@ jobs:
       #     pip install -r requirements.txt
 
       # Verificar se o ambiente virtual foi criado corretamente
-      - name: Check virtual environment
-        run: |
-          if [ ! -d ".venv" ]; then
-            echo "Virtual environment not found. Please run the setup job first."
-            exit 1
-          fi
-          echo "Virtual environment found."
-          # Verificar se o ambiente virtual está ativo
-          if [ -z "$VIRTUAL_ENV" ]; then
-            echo "Virtual environment not activated. Please activate the virtual environment."
-            exit 1
-          fi
+      # - name: Check virtual environment
+      #   run: |
+      #     if [ ! -d ".venv" ]; then
+      #       echo "Virtual environment not found. Please run the setup job first."
+      #       exit 1
+      #     fi
+      #     echo "Virtual environment found."
+      #     # Verificar se o ambiente virtual está ativo
+      #     if [ -z "$VIRTUAL_ENV" ]; then
+      #       echo "Virtual environment not activated. Please activate the virtual environment."
+      #       exit 1
+      #     fi
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
