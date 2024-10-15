@@ -58,7 +58,7 @@ jobs:
 
       - name: Ensure virtual environment and dependencies
         run: |
-          if [ ! -d "venv" ]; then
+          Run if [ ! -d "venv" ]; then
             echo "venv directory not found, recreating virtual environment"
             python -m venv venv
             source venv/bin/activate
@@ -67,7 +67,9 @@ jobs:
             echo "venv found, activating"
             source venv/bin/activate
           fi
+
           pip install flake8 black
+
 
       - name: Run flake8
         run: |

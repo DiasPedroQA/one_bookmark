@@ -2,8 +2,8 @@
 # Flake8 é uma ferramenta para verificar a conformidade com o estilo de código Python (PEP8).
 
 [flake8]
-# Definir o tamanho máximo da linha como 90 caracteres, compatível com o Black.
-max-line-length = 90
+# Definir o tamanho máximo da linha como 95 caracteres, compatível com o Black.
+max-line-length = 95
 
 # Ignorar erros específicos:
 # E501: Linha muito longa.
