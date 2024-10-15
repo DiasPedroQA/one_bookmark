@@ -7,11 +7,9 @@ max-line-length = 95
 
 # Ignorar erros específicos:
 # E501: Linha muito longa.
-# W503: Quebra de linha antes de um operador binário (PEP8 sugere o contrário, mas é flexível).
-ignore = 
-    E501,   # Linha muito longa.
-    W503    # Quebra de linha antes de um operador binário.
-    C901,   # Função com muitos argumentos
+# W503: Quebra de linha antes de um operador binário.
+# C901: Função com muitos argumentos.
+ignore = E501, W503, C901
 
 
 # Diretórios e arquivos a serem ignorados pelo Flake8.
