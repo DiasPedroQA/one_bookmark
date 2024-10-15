@@ -68,19 +68,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Reutilizar o ambiente virtual criado no job de setup
+      # Ativar ou recriar o ambiente virtual, se necessário
       - name: Activate virtual environment
         run: |
+          if [ ! -d ".venv" ]; then
+            echo "Virtual environment not found, creating .venv"
+            python -m venv .venv
+          fi
           source .venv/bin/activate
 
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
+          source .venv/bin/activate
           black --check src/* tests/*
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
         run: |
+          source .venv/bin/activate
           flake8 src/* tests/*
 
       # Upload dos relatórios de linting
@@ -100,9 +106,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Reutilizar o ambiente virtual do job de setup
+      # Ativar ou recriar o ambiente virtual, se necessário
       - name: Activate virtual environment
         run: |
+          if [ ! -d ".venv" ]; then
+            echo "Virtual environment not found, creating .venv"
+            python -m venv .venv
+          fi
           source .venv/bin/activate
 
       # Criar banco de dados SQLite para testes
@@ -114,6 +124,7 @@ jobs:
       # Executar os testes com pytest e gerar cobertura
       - name: Run tests with coverage
         run: |
+          source .venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-fail-under=80
           cp .coverage coverage.xml
 
