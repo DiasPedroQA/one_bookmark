@@ -20,8 +20,6 @@ exclude =
     __pycache__,
     venv,
     .venv,
-    new_venv,
-    .new_venv,
     docs/source/conf.py,
     old,
     build,
