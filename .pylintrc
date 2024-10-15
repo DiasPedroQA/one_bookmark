@@ -116,6 +116,13 @@ unsafe-load-any-extension=no
 #verbose=
 
 
+[MASTER]
+# A lista de códigos de erros que você deseja ignorar
+disable=
+      E0401,  # import-error
+      E1121,  # No owner for instance attribute
+      W0621,  # redefined-outer-name
+
 [BASIC]
 
 # Naming style matching correct argument names.

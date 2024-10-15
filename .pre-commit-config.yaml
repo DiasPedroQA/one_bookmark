@@ -40,8 +40,8 @@ repos:
         stages: [pre-commit]  # Executa durante o commit
 
       # Limpeza de __pycache__ e caches do pytest
-      - id: clean-pycache
-        name: Clean pycache and pytest cache
-        entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
-        language: system
-        always_run: true  # Executa sempre que o pre-commit rodar
+      # - id: clean-pycache
+      #   name: Clean pycache and pytest cache
+      #   entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
+      #   language: system
+      #   always_run: true  # Executa sempre que o pre-commit rodar

@@ -4,8 +4,8 @@
 
 [tool.black]
 # Configura o formatador Black.
-# Definir o tamanho máximo da linha para 99 caracteres.
-line-length = 99
+# Definir o tamanho máximo da linha para 90 caracteres.
+line-length = 90
 
 # Modifica a string de aspas duplas para aspas simples.
 skip-string-normalization = true
@@ -25,8 +25,8 @@ exclude = '''
 
 [tool.flake8]
 # Configura o Flake8, um analisador de código para detecção de erros e estilo.
-# Define o tamanho máximo das linhas para 99 caracteres.
-max-line-length = 99
+# Define o tamanho máximo das linhas para 90 caracteres.
+max-line-length = 90
 
 # Ignorar os seguintes códigos de erro. Ajuste de acordo com suas necessidades.
 # E501: Linha muito longa.
@@ -40,8 +40,8 @@ exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist"
 # Configura o Pylint para análise de código estático.
 # Aqui você pode ajustar as opções semelhantes ao seu arquivo .pylintrc.
 
-# Define o tamanho máximo da linha para 99 caracteres, semelhante ao Black.
-max-line-length = 99
+# Define o tamanho máximo da linha para 90 caracteres, semelhante ao Black.
+max-line-length = 90
 
 # Ignorar os seguintes erros, ajustados para o seu projeto.
 # C0114: Faltando docstring de módulo.
@@ -53,7 +53,7 @@ disable = ["C0114", "C0115", "C0116", "E1101"]
 [tool.isort]
 # Configura o isort para organizar automaticamente os imports.
 profile = "black"
-line_length = 99
+line_length = 90
 
 # Ajuste as seções para garantir que os pacotes locais sejam corretamente organizados.
 known_third_party = ["flask", "sqlalchemy", "pytest"]

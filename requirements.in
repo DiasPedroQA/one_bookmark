@@ -20,7 +20,8 @@ pytest-cov             # Ferramenta para cobertura de testes
 fastapi                # Framework web para APIs rápidas
 
 # ORM para banco de dados
-SQLAlchemy             # ORM para banco de dados
+SQLAlchemy                    # ORM para banco de dados
+SQLAlchemy-Utils              # Utilitários para SQLAlchemy
 
 # Ferramentas de parsing HTML
 beautifulsoup4         # Biblioteca para parsing HTML

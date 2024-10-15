@@ -105,6 +105,8 @@ celerybeat.pid
 # Ambientes virtuais
 .env
 env/
+new_venv/
+.new_venv/
 .venv/
 venv/
 .one_venv/
