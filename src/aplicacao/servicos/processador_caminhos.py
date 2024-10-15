@@ -31,9 +31,8 @@ class ProcessadorCaminhos:
             caminhos: Uma lista de caminhos a serem processados.
         """
         self.caminhos: List[Path] = [Path(caminho) for caminho in caminhos]
-        self.arquivos_encontrados: List[
-            str
-        ] = []  # Lista para armazenar arquivos processados
+        self.arquivos_encontrados: List[str] = []
+        # Lista para armazenar arquivos processados
 
     def processar_caminhos(self) -> None:
         """
@@ -81,9 +80,7 @@ class ProcessadorCaminhos:
                     item
                 )  # Chama recursivamente para processar subpasta
             else:
-                self.processar_caminho_invalido(
-                    item
-                )  # Tratar itens inválidos se necessário
+                self.processar_caminho_invalido(item)  # Tratar itens inválidos se necessário
 
     def processar_caminho_invalido(self, caminho: Path) -> None:
         """

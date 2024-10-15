@@ -27,9 +27,8 @@ def sanitizar_texto(texto: str) -> str:
         return texto  # Se não for uma string, retorne o valor original
 
     # Normalize o texto para decompor caracteres problemáticos
-    texto_normalizado = unicodedata.normalize(
-        'NFKC', texto
-    )  # NFKC mantém a compatibilidade
+    texto_normalizado = unicodedata.normalize('NFKC', texto)
+    # NFKC mantém a compatibilidade
 
     # Remover caracteres de controle (não imprimíveis ou invisíveis)
     texto_sanitizado = re.sub(r'[\u0000-\u001F\u007F-\u009F]', '', texto_normalizado)
