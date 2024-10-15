@@ -23,21 +23,21 @@ def configurar_logger(nome: str) -> logging.Logger:
     Configura e retorna um logger para o módulo especificado.
 
     Args:
-        nome (str): O nome do módulo que está usando o logger. Geralmente,
-                    é o __name__ do módulo.
+        nome (str): O nome do módulo que está usando o logger.
+        Geralmente, é o __name__ do módulo.
 
     Returns:
         logging.Logger: Um objeto Logger configurado para o módulo.
     """
     # Criar um diretório para armazenar logs, se não existir
-    Path("src/aplicacao/logs").mkdir(parents=True, exist_ok=True)
+    Path("logs").mkdir(parents=True, exist_ok=True)
 
     # Configuração básica do logger
     logging.basicConfig(
         level=logging.DEBUG,  # Nível mínimo de severidade das mensagens
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler("src/aplicacao/logs/app.log"),  # Log em arquivo
+            logging.FileHandler("logs/app.log"),  # Log em arquivo
             logging.StreamHandler(),  # Log no console
         ],
     )

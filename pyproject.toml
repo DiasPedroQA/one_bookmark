@@ -1,6 +1,6 @@
 # Este arquivo configura diversas ferramentas para o projeto.
 # pyproject.toml é usado para gerenciar dependências e outras configurações
-# de ferramentas, como Black, Flake8, isort, Pylint, pytest, etc.
+# de ferramentas como Black, Flake8, isort, Pylint, pytest, etc.
 
 [tool.black]
 # Configura o formatador Black.
@@ -20,6 +20,8 @@ exclude = '''
   | \.pytest_cache
   | \.vscode
   | migrations
+  | build
+  | dist
 )/
 '''
 
@@ -34,7 +36,7 @@ max-line-length = 95
 ignore = ["E501", "W503"]
 
 # Especifica arquivos ou diretórios a serem excluídos do Flake8.
-exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist"
+exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist,migrations"
 
 [tool.pylint]
 # Configura o Pylint para análise de código estático.
@@ -60,7 +62,7 @@ known_third_party = ["flask", "sqlalchemy", "pytest"]
 known_first_party = ["src"]
 
 # Exclui diretórios para isort.
-skip = ["migrations"]
+skip = ["migrations", "build", "dist"]
 
 [tool.mypy]
 # Configurações para o mypy (verificação de tipo).
@@ -76,11 +78,32 @@ disallow_untyped_defs = true
 # Ignorar erros de tipagem para bibliotecas externas.
 ignore_missing_imports = true
 
+# Checa se os argumentos das funções estão devidamente anotados.
+disallow_incomplete_defs = true
+
+# Requer que todos os retornos de função sejam tipados.
+disallow_untyped_returns = true
+
 [tool.pytest.ini_options]
 # Configurações para o pytest.
-# Configurações do pytest podem ser colocadas aqui para evitar um arquivo pytest.ini separado.
+# Versão mínima do pytest
 minversion = "6.0"
-addopts = "--strict-markers --tb=short"
+
+# Adiciona o pytest-cov e configura as opções de cobertura.
+addopts = "--strict-markers --tb=short --cov=src --cov-fail-under=80"
+
+# Define o caminho para os testes.
 testpaths = [
-    "tests",  # O diretório onde os testes estão localizados.
+    "tests"  # O diretório onde os testes estão localizados.
 ]
+
+# Adiciona uma configuração para coletar arquivos de teste que sigam um padrão.
+python_files = ["test_*.py"]
+
+# Define o formato de cobertura de código, que pode incluir XML ou JSON para integração contínua.
+# Essas opções são úteis se você deseja integrar os resultados com relatórios.
+[tool.pytest-cov]
+cov-report = "term-missing,html:htmlcov"
+
+# A cobertura mínima (em %) exigida para os testes.
+fail-under = 80

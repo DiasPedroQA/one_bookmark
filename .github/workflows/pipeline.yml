@@ -125,21 +125,21 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
-          pytest --cov=src --cov-report=xml --cov-fail-under=80
-          cp .coverage coverage.xml
+          pytest --cov=src --cov-report=html --cov-fail-under=80
+          cp .coverage coverage.html
 
       # Fazer upload do relatório de cobertura
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage.xml
+          path: coverage.html
 
       # Publicar o resultado da cobertura
-      - name: Publish coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage.xml
-          flags: unittests
-          name: codecov-coverage
+      # - name: Publish coverage to Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     files: coverage.html
+      #     flags: unittests
+      #     name: codecov-coverage
