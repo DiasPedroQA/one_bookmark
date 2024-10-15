@@ -15,6 +15,7 @@ python-dotenv          # Gerenciamento de variáveis de ambiente
 # Ferramentas para testes
 pytest                 # Framework de testes
 pytest-cov             # Ferramenta para cobertura de testes
+pytest_mock            # Biblioteca para simulação de testes
 
 # Framework web
 fastapi                # Framework web para APIs rápidas

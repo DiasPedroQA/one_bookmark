@@ -75,6 +75,9 @@ strict = true
 # Exige a verificação de tipo em funções sem anotação.
 disallow_untyped_defs = true
 
+# Requer que todos os argumentos das funções sejam tipados.
+disallow_untyped_calls = true  # Correção aqui
+
 # Ignorar erros de tipagem para bibliotecas externas.
 ignore_missing_imports = true
 
@@ -82,7 +85,7 @@ ignore_missing_imports = true
 disallow_incomplete_defs = true
 
 # Requer que todos os retornos de função sejam tipados.
-disallow_untyped_returns = true
+# disallow_untyped_returns = true
 
 [tool.pytest.ini_options]
 # Configurações para o pytest.
