@@ -127,7 +127,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
-          pip install pytest
+          pip install pytest-cov
           pytest --cov=src --cov-report=html --cov-fail-under=80
           cp .coverage coverage.html
 
