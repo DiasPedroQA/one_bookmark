@@ -91,12 +91,14 @@ jobs:
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
         run: |
+          python -m venv .venv
           source .venv/bin/activate
           flake8 src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
 
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
+          python -m venv .venv
           source .venv/bin/activate
           black --check src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
 
