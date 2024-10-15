@@ -58,14 +58,14 @@ jobs:
 
       - name: Ensure virtual environment and dependencies
         run: |
-          if [ ! -d ".venv" ]; then
-            echo ".venv directory not found, recreating virtual environment"
-            python -m venv .venv
-            source .venv/bin/activate
+          if [ ! -d "venv" ]; then
+            echo "recreating virtual environment"
+            python -m venv venv
+            source venv/bin/activate
             pip install -r requirements.txt
           else
-            echo ".venv found, activating"
-            source .venv/bin/activate
+            echo "venv found, activating"
+            source venv/bin/activate
           fi
 
           pip install flake8 black
@@ -81,6 +81,10 @@ jobs:
           black --check src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
 
   # Testes e cobertura de código
+  # This GitHub Actions workflow runs tests and collects code coverage for the project.
+  # It sets up a MySQL service, activates a virtual environment,
+  # runs the test suite with pytest and pytest-cov, and uploads
+  # the coverage report as an artifact.
   test:
     runs-on: ubuntu-latest
     needs: lint
