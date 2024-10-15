@@ -127,17 +127,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use cached or recreate virtual environment
-        run: |
-          if [ ! -d ".venv" ]; then
-            echo ".venv directory not found, recreating virtual environment"
-            python -m venv .venv
-            source .venv/bin/activate
-            pip install -r requirements.txt
-          else
-            echo ".venv found, activating"
-            source .venv/bin/activate
-          fi
+      # - name: Use cached or recreate virtual environment
+      #   run: |
+      #     if [ ! -d ".venv" ]; then
+      #       echo ".venv directory not found, recreating virtual environment"
+      #       python -m venv .venv
+      #       source .venv/bin/activate
+      #       pip install -r requirements.txt
+      #     else
+      #       echo ".venv found, activating"
+      #       source .venv/bin/activate
+      #     fi
 
       # Executar os testes com pytest e gerar cobertura
       - name: Run tests with coverage
