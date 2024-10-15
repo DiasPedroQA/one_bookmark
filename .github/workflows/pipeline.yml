@@ -88,14 +88,6 @@ jobs:
       #       exit 1
       #     fi
 
-      # Rodar o flake8 para garantir a qualidade do código
-      - name: Run flake8
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install flake8
-          flake8 src/* tests/*
-
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
@@ -103,6 +95,14 @@ jobs:
           source .venv/bin/activate
           pip install black
           black --check src/* tests/*
+
+      # Rodar o flake8 para garantir a qualidade do código
+      - name: Run flake8
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install flake8
+          flake8 src/* tests/*
 
   # Job para rodar os testes e coletar cobertura de código
   test:
