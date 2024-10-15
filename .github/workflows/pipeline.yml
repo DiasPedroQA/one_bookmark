@@ -76,18 +76,18 @@ jobs:
         run: |
           python -m venv .venv
           source .venv/bin/activate
+          black --check src/* tests/*
+          flake8 src/* tests/*
 
       # Verificar a formatação do código com black
-      - name: Check code format with Black
-        run: |
-          source .venv/bin/activate
-          black --check src/* tests/*
+      # - name: Check code format with Black
+      #   run: |
+      #     source .venv/bin/activate
 
       # Rodar o flake8 para garantir a qualidade do código
-      - name: Run flake8
-        run: |
-          source .venv/bin/activate
-          flake8 src/* tests/*
+      # - name: Run flake8
+      #   run: |
+      #     source .venv/bin/activate
 
       # Upload dos relatórios de linting
       - name: Upload lint report
