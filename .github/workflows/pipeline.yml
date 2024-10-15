@@ -93,14 +93,16 @@ jobs:
         run: |
           python -m venv .venv
           source .venv/bin/activate
-          flake8 src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
+          pip install flake8
+          flake8 src/* tests/*
 
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
           python -m venv .venv
           source .venv/bin/activate
-          black --check src/controllers/ src/models/ src/repositories/ src/utils/ tests/unit/
+          pip install black
+          black --check src/* tests/*
 
   # Job para rodar os testes e coletar cobertura de código
   test:
