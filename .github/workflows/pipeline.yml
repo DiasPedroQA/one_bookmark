@@ -1,5 +1,8 @@
 name: CI Pipeline
 
+# This workflow is triggered on push to the main branch
+# and on pull requests to the main branch.
+# It is used to run the CI pipeline for the project.
 on:
   push:
     branches:
@@ -71,10 +74,7 @@ jobs:
       # Ativar ou recriar o ambiente virtual, se necessário
       - name: Activate virtual environment
         run: |
-          if [ ! -d ".venv" ]; then
-            echo "Virtual environment not found, creating .venv"
-            python -m venv .venv
-          fi
+          python -m venv .venv
           source .venv/bin/activate
 
       # Verificar a formatação do código com black
