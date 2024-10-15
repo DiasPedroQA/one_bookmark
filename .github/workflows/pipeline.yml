@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Upgrade pip and install dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pip-tools
@@ -44,9 +44,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: ${{ runner.os }}-.venv-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-.venv-
+            ${{ runner.os }}-venv-
 
   # Linting e formatação do código
   lint:
@@ -118,6 +118,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
+          pip install pytest pytest-cov
           pytest --cov=src --cov-fail-under=80
 
       - name: Upload coverage report
