@@ -1,3 +1,289 @@
+[MASTER]
+# A lista de códigos de erros que você deseja ignorar
+disable=
+      E0401,  # import-error
+      E1121,  # No owner for instance attribute
+      W0621,  # redefined-outer-name
+
+# Diretórios para ignorar durante a análise
+ignore=venv,build,dist,.git,__pycache__,.pytest_cache
+
+# Tamanho máximo de linha (consistente com o Black e Flake8)
+max-line-length=95
+
+# Plugins adicionais
+load-plugins=pylint.extensions.docparams
+
+[MESSAGES CONTROL]
+# Only show warnings with the listed confidence levels. Leave empty to show
+# all. Valid levels: HIGH, CONTROL_FLOW, INFERENCE, INFERENCE_FAILURE,
+# UNDEFINED.
+confidence=HIGH,
+           CONTROL_FLOW,
+           INFERENCE,
+           INFERENCE_FAILURE,
+           UNDEFINED
+
+# Disable the message, report, category or checker with the given id(s). You
+# can either give multiple identifiers separated by comma (,) or put this
+# option multiple times (only on the command line, not in the configuration
+# file where it should appear only once). You can also use "--disable=all" to
+# disable everything first and then re-enable specific checks. For example, if
+# you want to run only the similarities checker, you can use "--disable=all
+# --enable=similarities". If you want to run only the classes checker, but have
+# no Warning level messages displayed, use "--disable=all --enable=classes
+# --disable=W".
+disable=raw-checker-failed,  # for example, flake8 test.py
+        bad-inline-option,  # for example, "python setup.py lint".
+        locally-disabled,  # for example, "pylint --disable=locally-disabled test.py"
+        file-ignored,  # for example, "pylint --disable=file-ignored test.py"
+        suppressed-message,  # for example, "pylint --disable=suppressed-message test.py"
+        useless-suppression,  # for example, "pylint --disable=useless-suppression test.py"
+        deprecated-pragma,  # for example, "pylint --disable=deprecated-pragma test.py"
+        use-symbolic-message-instead,  # for example, "pylint --disable=use-symbolic-message-instead test.py"
+        use-implicit-booleaness-not-comparison-to-string,  # Ignorado pelo Mypy
+        use-implicit-booleaness-not-comparison-to-zero  # Ignorado pelo Mypy
+        missing-module-docstring,  # Verificado pelo Flake8
+        missing-class-docstring,   # Verificado pelo Flake8
+        missing-function-docstring,  # Verificado pelo Flake8
+        line-too-long,  # Já controlado pelo Black e Flake8
+        import-error,  # Ignorado também pelo Mypy
+        too-few-public-methods,  # Para classes com poucos métodos
+
+# Enable the message, report, category or checker with the given id(s). You can
+# either give multiple identifier separated by comma (,) or put this option
+# multiple time (only on the command line, not in the configuration file where
+# it should appear only once). See also the "--disable" option for examples.
+enable=
+
+[FORMAT]
+# Número máximo de argumentos permitidos por função/método
+max-args=5
+
+# Força espaçamento em torno de operadores
+good-names=i,j,k,ex,Run,_
+
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+expected-line-ending-format=
+
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+
+# Number of spaces of indent required inside a hanging or continued line.
+indent-after-paren=4
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
+# tab).
+indent-string='    '
+
+# Maximum number of characters on a single line.
+max-line-length=100
+
+# Maximum number of lines in a module.
+max-module-lines=1000
+
+# Allow the body of a class to be on the same line as the declaration if body
+# contains single statement.
+single-line-class-stmt=no
+
+# Allow the body of an if to be on the same line as the test if there is no
+# else.
+single-line-if-stmt=no
+
+[BASIC]
+# Permitir variáveis curtas (útil em loops e operações curtas)
+variable-rgx=[a-z_][a-z0-9_]{0,30}$
+
+# Regular expression matching correct class constant names. Overrides class-
+# const-naming-style. If left empty, class constant names will be checked with
+# the set naming style.
+#class-const-rgx=
+
+# Permitir constantes com letras maiúsculas e underscores
+# Regular expression matching correct constant names. Overrides const-naming-
+# style. If left empty, constant names will be checked with the set naming
+# style.
+const-rgx=([A-Z_][A-Z0-9_]*)|(__.*__)
+
+# Naming style matching correct argument names.
+argument-naming-style=snake_case
+
+# Regular expression matching correct argument names. Overrides argument-
+# naming-style. If left empty, argument names will be checked with the set
+# naming style.
+#argument-rgx=
+
+# Naming style matching correct attribute names.
+attr-naming-style=snake_case
+
+# Regular expression matching correct attribute names. Overrides attr-naming-
+# style. If left empty, attribute names will be checked with the set naming
+# style.
+#attr-rgx=
+
+# Bad variable names which should always be refused, separated by a comma.
+bad-names=foo,
+          bar,
+          baz,
+          toto,
+          tutu,
+          tata
+
+# Bad variable names regexes, separated by a comma. If names match any regex,
+# they will always be refused
+bad-names-rgxs=
+
+# Naming style matching correct class attribute names.
+class-attribute-naming-style=any
+
+# Regular expression matching correct class attribute names. Overrides class-
+# attribute-naming-style. If left empty, class attribute names will be checked
+# with the set naming style.
+#class-attribute-rgx=
+
+# Naming style matching correct class constant names.
+class-const-naming-style=UPPER_CASE
+
+# Naming style matching correct class names.
+class-naming-style=PascalCase
+
+# Regular expression matching correct class names. Overrides class-naming-
+# style. If left empty, class names will be checked with the set naming style.
+#class-rgx=
+
+# Naming style matching correct constant names.
+const-naming-style=UPPER_CASE
+
+# Minimum line length for functions/classes that require docstrings, shorter
+# ones are exempt.
+docstring-min-length=-1
+
+# Naming style matching correct function names.
+function-naming-style=snake_case
+
+# Regular expression matching correct function names. Overrides function-
+# naming-style. If left empty, function names will be checked with the set
+# naming style.
+#function-rgx=
+
+# Good variable names which should always be accepted, separated by a comma.
+good-names=i,
+           j,
+           k,
+           ex,
+           Run,
+           _
+
+# Good variable names regexes, separated by a comma. If names match any regex,
+# they will always be accepted
+good-names-rgxs=
+
+# Include a hint for the correct naming format with invalid-name.
+include-naming-hint=no
+
+# Naming style matching correct inline iteration names.
+inlinevar-naming-style=any
+
+# Regular expression matching correct inline iteration names. Overrides
+# inlinevar-naming-style. If left empty, inline iteration names will be checked
+# with the set naming style.
+#inlinevar-rgx=
+
+# Naming style matching correct method names.
+method-naming-style=snake_case
+
+# Regular expression matching correct method names. Overrides method-naming-
+# style. If left empty, method names will be checked with the set naming style.
+#method-rgx=
+
+# Naming style matching correct module names.
+module-naming-style=snake_case
+
+# Regular expression matching correct module names. Overrides module-naming-
+# style. If left empty, module names will be checked with the set naming style.
+#module-rgx=
+
+# Colon-delimited sets of names that determine each other's naming style when
+# the name regexes allow several styles.
+name-group=
+
+# Regular expression which should only match function or class names that do
+# not require a docstring.
+no-docstring-rgx=^_
+
+# List of decorators that produce properties, such as abc.abstractproperty. Add
+# to this list to register other decorators that produce valid properties.
+# These decorators are taken in consideration only for invalid-name.
+property-classes=abc.abstractproperty
+
+# Regular expression matching correct type alias names. If left empty, type
+# alias names will be checked with the set naming style.
+#typealias-rgx=
+
+# Regular expression matching correct type variable names. If left empty, type
+# variable names will be checked with the set naming style.
+#typevar-rgx=
+
+# Naming style matching correct variable names.
+variable-naming-style=snake_case
+
+# Regular expression matching correct variable names. Overrides variable-
+# naming-style. If left empty, variable names will be checked with the set
+# naming style.
+#variable-rgx=
+
+[DESIGN]
+# Permitir até 7 atributos por classe (see R0902)
+max-attributes=7
+
+# List of regular expressions of class ancestor names to ignore when counting
+# public methods (see R0903)
+exclude-too-few-public-methods=
+
+# List of qualified class names to ignore when counting class parents (see
+# R0901)
+ignored-parents=
+
+# Maximum number of arguments for function / method.
+max-args=5
+
+# Maximum number of boolean expressions in an if statement (see R0916).
+max-bool-expr=5
+
+# Maximum number of branch for function / method body.
+max-branches=12
+
+# Maximum number of locals for function / method body.
+max-locals=15
+
+# Maximum number of parents for a class (see R0901).
+max-parents=7
+
+# Maximum number of positional arguments for function / method.
+# max-positional-arguments=5
+
+# Maximum number of public methods for a class (see R0904).
+max-public-methods=20
+
+# Maximum number of return / yield for function / method body.
+max-returns=6
+
+# Maximum number of statements in function / method body.
+max-statements=50
+
+# Minimum number of public methods for a class (see R0903).
+min-public-methods=2
+
+
+[REPORTS]
+# Desabilitar o relatório de nota de avaliação final
+evaluation=10.0
+score=no
+
+[TYPECHECK]
+# Ignorar avisos de tipagem para módulos importados que não são encontrados
+ignored-modules=fastapi,sqlalchemy
+
 [MAIN]
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
@@ -116,153 +402,6 @@ unsafe-load-any-extension=no
 #verbose=
 
 
-[MASTER]
-# A lista de códigos de erros que você deseja ignorar
-disable=
-      E0401,  # import-error
-      E1121,  # No owner for instance attribute
-      W0621,  # redefined-outer-name
-
-[BASIC]
-
-# Naming style matching correct argument names.
-argument-naming-style=snake_case
-
-# Regular expression matching correct argument names. Overrides argument-
-# naming-style. If left empty, argument names will be checked with the set
-# naming style.
-#argument-rgx=
-
-# Naming style matching correct attribute names.
-attr-naming-style=snake_case
-
-# Regular expression matching correct attribute names. Overrides attr-naming-
-# style. If left empty, attribute names will be checked with the set naming
-# style.
-#attr-rgx=
-
-# Bad variable names which should always be refused, separated by a comma.
-bad-names=foo,
-          bar,
-          baz,
-          toto,
-          tutu,
-          tata
-
-# Bad variable names regexes, separated by a comma. If names match any regex,
-# they will always be refused
-bad-names-rgxs=
-
-# Naming style matching correct class attribute names.
-class-attribute-naming-style=any
-
-# Regular expression matching correct class attribute names. Overrides class-
-# attribute-naming-style. If left empty, class attribute names will be checked
-# with the set naming style.
-#class-attribute-rgx=
-
-# Naming style matching correct class constant names.
-class-const-naming-style=UPPER_CASE
-
-# Regular expression matching correct class constant names. Overrides class-
-# const-naming-style. If left empty, class constant names will be checked with
-# the set naming style.
-#class-const-rgx=
-
-# Naming style matching correct class names.
-class-naming-style=PascalCase
-
-# Regular expression matching correct class names. Overrides class-naming-
-# style. If left empty, class names will be checked with the set naming style.
-#class-rgx=
-
-# Naming style matching correct constant names.
-const-naming-style=UPPER_CASE
-
-# Regular expression matching correct constant names. Overrides const-naming-
-# style. If left empty, constant names will be checked with the set naming
-# style.
-#const-rgx=
-
-# Minimum line length for functions/classes that require docstrings, shorter
-# ones are exempt.
-docstring-min-length=-1
-
-# Naming style matching correct function names.
-function-naming-style=snake_case
-
-# Regular expression matching correct function names. Overrides function-
-# naming-style. If left empty, function names will be checked with the set
-# naming style.
-#function-rgx=
-
-# Good variable names which should always be accepted, separated by a comma.
-good-names=i,
-           j,
-           k,
-           ex,
-           Run,
-           _
-
-# Good variable names regexes, separated by a comma. If names match any regex,
-# they will always be accepted
-good-names-rgxs=
-
-# Include a hint for the correct naming format with invalid-name.
-include-naming-hint=no
-
-# Naming style matching correct inline iteration names.
-inlinevar-naming-style=any
-
-# Regular expression matching correct inline iteration names. Overrides
-# inlinevar-naming-style. If left empty, inline iteration names will be checked
-# with the set naming style.
-#inlinevar-rgx=
-
-# Naming style matching correct method names.
-method-naming-style=snake_case
-
-# Regular expression matching correct method names. Overrides method-naming-
-# style. If left empty, method names will be checked with the set naming style.
-#method-rgx=
-
-# Naming style matching correct module names.
-module-naming-style=snake_case
-
-# Regular expression matching correct module names. Overrides module-naming-
-# style. If left empty, module names will be checked with the set naming style.
-#module-rgx=
-
-# Colon-delimited sets of names that determine each other's naming style when
-# the name regexes allow several styles.
-name-group=
-
-# Regular expression which should only match function or class names that do
-# not require a docstring.
-no-docstring-rgx=^_
-
-# List of decorators that produce properties, such as abc.abstractproperty. Add
-# to this list to register other decorators that produce valid properties.
-# These decorators are taken in consideration only for invalid-name.
-property-classes=abc.abstractproperty
-
-# Regular expression matching correct type alias names. If left empty, type
-# alias names will be checked with the set naming style.
-#typealias-rgx=
-
-# Regular expression matching correct type variable names. If left empty, type
-# variable names will be checked with the set naming style.
-#typevar-rgx=
-
-# Naming style matching correct variable names.
-variable-naming-style=snake_case
-
-# Regular expression matching correct variable names. Overrides variable-
-# naming-style. If left empty, variable names will be checked with the set
-# naming style.
-#variable-rgx=
-
-
 [CLASSES]
 
 # Warn about protected attribute access inside special methods
@@ -286,87 +425,21 @@ valid-classmethod-first-arg=cls
 valid-metaclass-classmethod-first-arg=mcs
 
 
-[DESIGN]
-
-# List of regular expressions of class ancestor names to ignore when counting
-# public methods (see R0903)
-exclude-too-few-public-methods=
-
-# List of qualified class names to ignore when counting class parents (see
-# R0901)
-ignored-parents=
-
-# Maximum number of arguments for function / method.
-max-args=5
-
-# Maximum number of attributes for a class (see R0902).
-max-attributes=7
-
-# Maximum number of boolean expressions in an if statement (see R0916).
-max-bool-expr=5
-
-# Maximum number of branch for function / method body.
-max-branches=12
-
-# Maximum number of locals for function / method body.
-max-locals=15
-
-# Maximum number of parents for a class (see R0901).
-max-parents=7
-
-# Maximum number of positional arguments for function / method.
-# max-positional-arguments=5
-
-# Maximum number of public methods for a class (see R0904).
-max-public-methods=20
-
-# Maximum number of return / yield for function / method body.
-max-returns=6
-
-# Maximum number of statements in function / method body.
-max-statements=50
-
-# Minimum number of public methods for a class (see R0903).
-min-public-methods=2
-
-
 [EXCEPTIONS]
 
 # Exceptions that will emit a warning when caught.
 overgeneral-exceptions=builtins.BaseException,builtins.Exception
 
 
-[FORMAT]
-
-# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
-expected-line-ending-format=
-
-# Regexp for a line that is allowed to be longer than the limit.
-ignore-long-lines=^\s*(# )?<?https?://\S+>?$
-
-# Number of spaces of indent required inside a hanging or continued line.
-indent-after-paren=4
-
-# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
-# tab).
-indent-string='    '
-
-# Maximum number of characters on a single line.
-max-line-length=100
-
-# Maximum number of lines in a module.
-max-module-lines=1000
-
-# Allow the body of a class to be on the same line as the declaration if body
-# contains single statement.
-single-line-class-stmt=no
-
-# Allow the body of an if to be on the same line as the test if there is no
-# else.
-single-line-if-stmt=no
-
-
 [IMPORTS]
+# Desabilitar erro para imports que podem estar ausentes (verificado pelo Mypy)
+extension-pkg-whitelist=
+    sqlalchemy,
+    fastapi
+
+# Organizar imports de acordo com isort (seguindo o Black)
+known_third_party=sqlalchemy,fastapi
+known_first_party=src
 
 # List of modules that can be imported at any level, not just the top level
 # one.
@@ -414,44 +487,6 @@ logging-format-style=old
 # Logging modules to check that the string format arguments are in logging
 # function parameter format.
 logging-modules=logging
-
-
-[MESSAGES CONTROL]
-
-# Only show warnings with the listed confidence levels. Leave empty to show
-# all. Valid levels: HIGH, CONTROL_FLOW, INFERENCE, INFERENCE_FAILURE,
-# UNDEFINED.
-confidence=HIGH,
-           CONTROL_FLOW,
-           INFERENCE,
-           INFERENCE_FAILURE,
-           UNDEFINED
-
-# Disable the message, report, category or checker with the given id(s). You
-# can either give multiple identifiers separated by comma (,) or put this
-# option multiple times (only on the command line, not in the configuration
-# file where it should appear only once). You can also use "--disable=all" to
-# disable everything first and then re-enable specific checks. For example, if
-# you want to run only the similarities checker, you can use "--disable=all
-# --enable=similarities". If you want to run only the classes checker, but have
-# no Warning level messages displayed, use "--disable=all --enable=classes
-# --disable=W".
-disable=raw-checker-failed,
-        bad-inline-option,
-        locally-disabled,
-        file-ignored,
-        suppressed-message,
-        useless-suppression,
-        deprecated-pragma,
-        use-symbolic-message-instead,
-        use-implicit-booleaness-not-comparison-to-string,
-        use-implicit-booleaness-not-comparison-to-zero
-
-# Enable the message, report, category or checker with the given id(s). You can
-# either give multiple identifier separated by comma (,) or put this option
-# multiple time (only on the command line, not in the configuration file where
-# it should appear only once). See also the "--disable" option for examples.
-enable=
 
 
 [METHOD_ARGS]

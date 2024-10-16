@@ -13,7 +13,7 @@ mypy                   # Ferramenta de verificação de tipos estática
 python-dotenv          # Gerenciamento de variáveis de ambiente
 
 # Ferramentas para testes
-pytest                 # Framework de testes
+pytest==7.2.1          # Framework de testes
 pytest-cov             # Ferramenta para cobertura de testes
 pytest_mock            # Biblioteca para simulação de testes
 

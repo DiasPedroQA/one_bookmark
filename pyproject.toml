@@ -1,16 +1,16 @@
-# Este arquivo configura diversas ferramentas para o projeto.
-# pyproject.toml é usado para gerenciar dependências e outras configurações
-# de ferramentas como Black, Flake8, isort, Pylint, pytest, etc.
+# Arquivo de configuração do projeto em formato TOML
+# O pyproject.toml é usado para configurar ferramentas de análise de código, dependências,
+# e definições para ferramentas de desenvolvimento como o Black, Flake8, isort e pytest.
 
 [tool.black]
-# Configura o formatador Black.
-# Definir o tamanho máximo da linha para 95 caracteres.
+# Configurações do formatador Black.
+# Define o comprimento máximo das linhas para 95 caracteres.
 line-length = 95
 
-# Modifica a string de aspas duplas para aspas simples.
+# Evitar a normalização automática de strings (aspas duplas para aspas simples).
 skip-string-normalization = true
 
-# Exclui arquivos ou diretórios específicos do processo de formatação.
+# Excluir diretórios e arquivos do processo de formatação do Black.
 exclude = '''
 /(
     \.git
@@ -26,87 +26,74 @@ exclude = '''
 '''
 
 [tool.flake8]
-# Configura o Flake8, um analisador de código para detecção de erros e estilo.
-# Define o tamanho máximo das linhas para 95 caracteres.
+# Configurações para o Flake8, usadas para garantir conformidade com PEP8.
+# Mantém o comprimento de linha consistente com o Black.
 max-line-length = 95
 
-# Ignorar os seguintes códigos de erro. Ajuste de acordo com suas necessidades.
-# E501: Linha muito longa.
-# W503: Quebra de linha antes de um operador binário.
-ignore = ["E501", "W503"]
+# Ignorar códigos de erro que já foram ajustados no arquivo `.flake8`.
+ignore = ["C901", "E501", "W503"]
 
-# Especifica arquivos ou diretórios a serem excluídos do Flake8.
+# Diretórios e arquivos que não precisam ser verificados.
 exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist,migrations"
 
 [tool.pylint]
-# Configura o Pylint para análise de código estático.
-# Aqui você pode ajustar as opções semelhantes ao seu arquivo .pylintrc.
-
-# Define o tamanho máximo da linha para 95 caracteres, semelhante ao Black.
+# Configurações para o Pylint, usado para análise estática do código.
+# Define o comprimento máximo da linha para 95 caracteres.
 max-line-length = 95
 
-# Ignorar os seguintes erros, ajustados para o seu projeto.
-# C0114: Faltando docstring de módulo.
-# C0115: Faltando docstring de classe.
-# C0116: Faltando docstring de função.
-# E1101: Atributos ausentes (geralmente erro falso com SQLAlchemy).
-disable = ["C0114", "C0115", "C0116", "E1101"]
-
 [tool.isort]
-# Configura o isort para organizar automaticamente os imports.
+# Configurações para o isort, que organiza os imports de forma consistente.
+# Usa o perfil do Black para manter consistência.
 profile = "black"
 line_length = 95
 
-# Ajuste as seções para garantir que os pacotes locais sejam corretamente organizados.
+# Definição de pacotes de terceiros e pacotes locais.
 known_third_party = ["flask", "sqlalchemy", "pytest"]
 known_first_party = ["src"]
 
-# Exclui diretórios para isort.
+# Excluir diretórios dos quais o isort não deve organizar imports.
 skip = ["migrations", "build", "dist"]
 
 [tool.mypy]
-# Configurações para o mypy (verificação de tipo).
-# Ignora arquivos de migrations e cache.
+# Configurações para o mypy, que realiza verificação de tipos em tempo de execução.
+# Ignorar pastas de migrations, cache, etc.
 exclude = '/migrations/|/venv/|/tests/'
 
-# Ativa o modo estrito para verificação de tipos mais rigorosa.
+# Ativar verificação de tipos mais rigorosa.
 strict = true
 
-# Exige a verificação de tipo em funções sem anotação.
+# Exigir que todas as funções tenham tipos definidos.
 disallow_untyped_defs = true
 
-# Requer que todos os argumentos das funções sejam tipados.
-disallow_untyped_calls = true  # Correção aqui
+# Exigir que todas as chamadas de função usem argumentos tipados.
+disallow_untyped_calls = true
 
-# Ignorar erros de tipagem para bibliotecas externas.
+# Ignorar erros de importação para bibliotecas externas que podem não ter tipagem completa.
 ignore_missing_imports = true
 
-# Checa se os argumentos das funções estão devidamente anotados.
+# Certificar que todos os argumentos das funções sejam devidamente tipados.
 disallow_incomplete_defs = true
 
-# Requer que todos os retornos de função sejam tipados.
-# disallow_untyped_returns = true
-
 [tool.pytest.ini_options]
-# Configurações para o pytest.
-# Versão mínima do pytest
+# Configurações para o pytest, utilizado para testes automatizados.
+# Versão mínima do pytest para rodar.
 minversion = "6.0"
 
-# Adiciona o pytest-cov e configura as opções de cobertura.
+# Opções para o pytest: testes serão executados com cobertura de código.
 addopts = "--strict-markers --tb=short --cov=src --cov-fail-under=80"
 
-# Define o caminho para os testes.
+# Diretórios onde os testes estão localizados.
 testpaths = [
-    "tests"  # O diretório onde os testes estão localizados.
+    "tests"
 ]
 
-# Adiciona uma configuração para coletar arquivos de teste que sigam um padrão.
+# Definir o formato dos arquivos de teste.
 python_files = ["test_*.py"]
 
-# Define o formato de cobertura de código, que pode incluir XML ou JSON para integração contínua.
-# Essas opções são úteis se você deseja integrar os resultados com relatórios.
 [tool.pytest-cov]
+# Definir os relatórios de cobertura para o pytest-cov.
+# "term-missing" mostra o código faltante no terminal, e "htmlcov" gera relatório HTML.
 cov-report = "term-missing,html:htmlcov"
 
-# A cobertura mínima (em %) exigida para os testes.
+# Define a cobertura mínima exigida para que os testes sejam considerados completos.
 fail-under = 80

@@ -1,18 +1,17 @@
-# Arquivo de configuração do Flake8.
+# Arquivo de configuração do Flake8
 # Flake8 é uma ferramenta para verificar a conformidade com o estilo de código Python (PEP8).
 
 [flake8]
-# Definir o tamanho máximo da linha como 95 caracteres, compatível com o Black.
+# Definir o comprimento máximo de linha como 95 caracteres, o que é compatível com o Black.
 max-line-length = 95
 
-# Ignorar erros específicos:
-# E501: Linha muito longa.
-# W503: Quebra de linha antes de um operador binário.
-# C901: Função com muitos argumentos.
+# Ignorar erros específicos para evitar falsos positivos ou para se adequar às suas preferências de estilo:
+# - E501: Linha muito longa (não necessário já que definimos o tamanho máximo).
+# - W503: Quebra de linha antes de um operador binário.
+# - C901: Função com complexidade ciclomatica alta (permite funções com mais argumentos).
 ignore = E501, W503, C901
 
-
-# Diretórios e arquivos a serem ignorados pelo Flake8.
+# Excluir diretórios e arquivos que não precisam ser analisados pelo Flake8.
 exclude = 
     .git,
     __pycache__,
@@ -23,10 +22,12 @@ exclude =
     build,
     dist
 
-# Especifica o nível de complexidade ciclomatica máximo antes de gerar um aviso.
-# Isso ajuda a detectar funções ou métodos que se tornaram muito complexos.
+# Definir a complexidade ciclomatica máxima. Valores maiores indicam que a função precisa ser simplificada.
 max-complexity = 10
 
-# Definir os arquivos ou módulos que devem ser analisados.
-# Essa opção pode ser útil para restringir as verificações a partes específicas do projeto.
+# Selecionar códigos específicos para análise, abordando erros e padrões de código.
+# C: Erros de complexidade ciclomatica.
+# E: Erros de sintaxe.
+# F: Erros de importação.
+# W: Avisos de estilo.
 select = C,E,F,W

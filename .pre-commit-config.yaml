@@ -1,23 +1,31 @@
+# Arquivo de configuração do pre-commit com hooks para análise e formatação de código.
 repos:
   # Black - Ferramenta de formatação de código
   - repo: https://github.com/psf/black
-    rev: 22.3.0  # Atualizado para uma versão estável mais recente
+    rev: 24.10.0  # Use a versão estável mais recente.
     hooks:
       - id: black
+        args: ["--check", "--diff"]  # Verifica formatação e mostra diferenças.
 
   # Flake8 - Ferramenta de linting para Python
   - repo: https://github.com/pycqa/flake8
-    rev: 5.0.4  # Atualizado para uma versão mais recente
+    rev: 7.1.1  # Versão mais recente.
     hooks:
       - id: flake8
+        args: ["--max-line-length=95"]  # Consistente com o Black e PEP8.
+        additional_dependencies:
+          - flake8-bugbear  # Plugin para encontrar erros comuns.
+          - flake8-comprehensions  # Sugere melhorias em listas/compreensões.
+          - flake8-docstrings  # Verifica a conformidade com docstrings.
 
   # MyPy - Verificação de tipos estática para Python
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.991  # Atualizado para uma versão mais recente
+    rev: v1.12.0  # Versão mais recente.
     hooks:
       - id: mypy
+        args: ["--ignore-missing-imports", "--strict"]
 
-  # Pylint - Análise de código Python (configurado localmente)
+  # Pylint - Análise de código Python
   - repo: local
     hooks:
       - id: pylint
@@ -26,22 +34,49 @@ repos:
         language: system
         types: [python]
         args:
-          - "-rn"  # Exibe apenas mensagens
-          - "-sn"  # Não exibe a pontuação
-          - "--rcfile=.pylintrc"  # Usa o arquivo .pylintrc para configuração
-          - "--load-plugins=pylint.extensions.docparams"  # Carrega a extensão para docstrings
+          - "-rn"  # Exibe apenas mensagens.
+          - "-sn"  # Não exibe a pontuação.
+          - "--rcfile=.pylintrc"
+          - "--load-plugins=pylint.extensions.docparams"
+        stages: [pre-commit]
 
-      # Hook para atualizar automaticamente o arquivo requirements.txt após cada commit
+  # isort - Organização de imports
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1  # Atualize para a versão disponível.
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+
+  # Hook para atualizar automaticamente o arquivo requirements.txt após cada commit
+  - repo: local
+    hooks:
       - id: update-requirements
         name: Update requirements.txt
         entry: bash -c 'pip freeze > requirements.txt && git add requirements.txt'
         language: system
-        pass_filenames: false  # Ignora arquivos de entrada
-        stages: [pre-commit]  # Executa durante o commit
+        pass_filenames: false  # Ignora arquivos de entrada.
+        stages: [pre-commit]
 
-      # Limpeza de __pycache__ e caches do pytest
-      # - id: clean-pycache
-      #   name: Clean pycache and pytest cache
-      #   entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
-      #   language: system
-      #   always_run: true  # Executa sempre que o pre-commit rodar
+  # Limpeza de __pycache__ e caches do pytest
+  - repo: local
+    hooks:
+      - id: clean-pycache
+        name: Clean pycache and pytest cache
+        entry: bash -c 'find . -name "__pycache__" -type d -exec rm -rf {} +; find . -name ".pytest_cache" -type d -exec rm -rf {} +'
+        language: system
+        always_run: true  # Executa sempre que o pre-commit rodar.
+        stages: [pre-commit]
+
+  # # pytest - Execução automática dos testes antes do commit
+  # - repo: https://github.com/pre-commit/mirrors-pytest
+  #   rev: v7.2.1  # Use a versão estável mais recente.
+  #   hooks:
+  #     - id: pytest
+  #       args: ["--maxfail=1", "--disable-warnings"]  # Interrompe no primeiro erro.
+
+  # # pytest - Execução automática dos testes antes do commit
+  # - repo: https://github.com/pytest-dev/pytest
+  #   rev: 7.2.1  # Use a versão estável mais recente
+  #   hooks:
+  #     - id: pytest
+  #       args: ["--maxfail=1", "--disable-warnings"]  # Interrompe no primeiro erro.

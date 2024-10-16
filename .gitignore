@@ -171,3 +171,6 @@ init/complete_schema.sql
 .mypy_cache/
 .venv/
 .config/
+
+# Arquivos de gestão do projeto
+.zzz
