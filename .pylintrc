@@ -1,8 +1,12 @@
 [MASTER]
 # A lista de códigos de erros que você deseja ignorar
 disable=
+      E0015,  # undefined-variable
+      E0401,  # import-error
       E0401,  # import-error
       E1121,  # No owner for instance attribute
+      R0903,  # Too few public methods
+      W0105,  # string-format
       W0621,  # redefined-outer-name
 
 # Diretórios para ignorar durante a análise
@@ -23,32 +27,6 @@ confidence=HIGH,
            INFERENCE,
            INFERENCE_FAILURE,
            UNDEFINED
-
-# Disable the message, report, category or checker with the given id(s). You
-# can either give multiple identifiers separated by comma (,) or put this
-# option multiple times (only on the command line, not in the configuration
-# file where it should appear only once). You can also use "--disable=all" to
-# disable everything first and then re-enable specific checks. For example, if
-# you want to run only the similarities checker, you can use "--disable=all
-# --enable=similarities". If you want to run only the classes checker, but have
-# no Warning level messages displayed, use "--disable=all --enable=classes
-# --disable=W".
-disable=raw-checker-failed,  # for example, flake8 test.py
-        bad-inline-option,  # for example, "python setup.py lint".
-        locally-disabled,  # for example, "pylint --disable=locally-disabled test.py"
-        file-ignored,  # for example, "pylint --disable=file-ignored test.py"
-        suppressed-message,  # for example, "pylint --disable=suppressed-message test.py"
-        useless-suppression,  # for example, "pylint --disable=useless-suppression test.py"
-        deprecated-pragma,  # for example, "pylint --disable=deprecated-pragma test.py"
-        use-symbolic-message-instead,  # for example, "pylint --disable=use-symbolic-message-instead test.py"
-        use-implicit-booleaness-not-comparison-to-string,  # Ignorado pelo Mypy
-        use-implicit-booleaness-not-comparison-to-zero  # Ignorado pelo Mypy
-        missing-module-docstring,  # Verificado pelo Flake8
-        missing-class-docstring,   # Verificado pelo Flake8
-        missing-function-docstring,  # Verificado pelo Flake8
-        line-too-long,  # Já controlado pelo Black e Flake8
-        import-error,  # Ignorado também pelo Mypy
-        too-few-public-methods,  # Para classes com poucos métodos
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -274,15 +252,6 @@ max-statements=50
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
 
-
-[REPORTS]
-# Desabilitar o relatório de nota de avaliação final
-evaluation=10.0
-score=no
-
-[TYPECHECK]
-# Ignorar avisos de tipagem para módulos importados que não são encontrados
-ignored-modules=fastapi,sqlalchemy
 
 [MAIN]
 
@@ -525,7 +494,6 @@ never-returning-functions=sys.exit,argparse.parse_error
 
 
 [REPORTS]
-
 # Python expression which should return a score less than or equal to 10. You
 # have access to the variables 'fatal', 'error', 'warning', 'refactor',
 # 'convention', and 'info' which contain the number of messages in each
@@ -604,6 +572,8 @@ check-str-concat-over-line-jumps=no
 
 
 [TYPECHECK]
+# Ignorar avisos de tipagem para módulos importados que não são encontrados
+ignored-modules=fastapi,sqlalchemy
 
 # List of decorators that produce context managers, such as
 # contextlib.contextmanager. Add to this list to register other decorators that

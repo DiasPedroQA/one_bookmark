@@ -31,7 +31,7 @@ exclude = '''
 max-line-length = 95
 
 # Ignorar códigos de erro que já foram ajustados no arquivo `.flake8`.
-ignore = ["C901", "E501", "W503"]
+ignore = ["E0401", "C901", "E501", "W503"]
 
 # Diretórios e arquivos que não precisam ser verificados.
 exclude = ".git,__pycache__,docs/source/conf.py,old,build,dist,migrations"

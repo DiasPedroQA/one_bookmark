@@ -39,3 +39,7 @@ platformdirs           # Obtenção de diretórios específicos da plataforma
 pluggy                 # Sistema de plugins para Python
 tomlkit                # Manipulação de arquivos TOML
 typing_extensions      # Extensões para tipagem no Python
+
+# Dependências de desenvolvimento
+uvicorn                # Servidor de desenvolvimento web
+pydantic               # Biblioteca para validação de dados
