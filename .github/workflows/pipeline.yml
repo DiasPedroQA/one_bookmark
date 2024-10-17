@@ -83,7 +83,6 @@ jobs:
           source venv/bin/activate
           pip install black
           black --check src/*.py tests/*.py
-          prettier --write src/README.md
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
