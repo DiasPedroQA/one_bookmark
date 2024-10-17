@@ -28,8 +28,8 @@ jobs:
       # Remover ambiente virtual antigo, se existir
       - name: Remove old virtual environment
         run: |
-          if [ -d ".venv" ]; then
-            rm -rf .venv
+          if [ -d "venv" ]; then
+            rm -rf venv
           fi
 
       # Criar novo ambiente virtual e instalar dependências
@@ -38,8 +38,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pip-tools
           pip-compile requirements.in
-          python -m venv .venv
-          source .venv/bin/activate
+          python -m venv venv
+          source venv/bin/activate
           pip install -r requirements.txt
           pip-sync requirements.txt
           pip install flake8 black pytest pytest-cov sqlalchemy
@@ -57,7 +57,7 @@ jobs:
       - name: Cache virtual environment
         uses: actions/cache@v4
         with:
-          path: .venv
+          path: venv
           key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-venv-
@@ -74,20 +74,20 @@ jobs:
       # Ativar ou recriar o ambiente virtual, se necessário
       - name: Activate virtual environment
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
+          python -m venv venv
+          source venv/bin/activate
 
       # Verificar a formatação do código com black
       - name: Check code format with Black
         run: |
-          source .venv/bin/activate
+          source venv/bin/activate
           pip install black
           black --check src/* tests/*
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
         run: |
-          source .venv/bin/activate
+          source venv/bin/activate
           pip install flake8
           flake8 src/* tests/*
 
@@ -111,11 +111,11 @@ jobs:
       # Ativar ou recriar o ambiente virtual, se necessário
       - name: Activate virtual environment
         run: |
-          if [ ! -d ".venv" ]; then
-            echo "Virtual environment not found, creating .venv"
-            python -m venv .venv
+          if [ ! -d "venv" ]; then
+            echo "Virtual environment not found, creating venv"
+            python -m venv venv
           fi
-          source .venv/bin/activate
+          source venv/bin/activate
 
       # Criar banco de dados SQLite para testes
       - name: Setup SQLite database
@@ -126,7 +126,7 @@ jobs:
       # Executar os testes com pytest e gerar cobertura
       - name: Run tests with coverage
         run: |
-          source .venv/bin/activate
+          source venv/bin/activate
           pip install pytest pytest-cov
           pytest --cov=src --cov-report=html --cov-fail-under=80
           cp .coverage coverage.html

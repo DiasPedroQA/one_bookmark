@@ -39,8 +39,8 @@ A **One Bookmark** tem como finalidade:
 2. **Crie e ative o ambiente virtual com `venv`**:
 
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
 3. **Instale as dependências**:

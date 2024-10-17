@@ -15,6 +15,7 @@ exclude = '''
 /(
     \.git
   | \.venv
+  | \venv
   | \.mypy_cache
   | \.tox
   | \.pytest_cache
