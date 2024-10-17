@@ -82,14 +82,15 @@ jobs:
         run: |
           source venv/bin/activate
           pip install black
-          black --check src/* tests/*
+          black --check src/*.py tests/*.py
+          prettier --write src/README.md
 
       # Rodar o flake8 para garantir a qualidade do código
       - name: Run flake8
         run: |
           source venv/bin/activate
           pip install flake8
-          flake8 src/* tests/*
+          flake8 src/*.py tests/*.py
 
       # Upload dos relatórios de linting
       - name: Upload lint report
@@ -128,7 +129,7 @@ jobs:
         run: |
           source venv/bin/activate
           pip install pytest pytest-cov
-          pytest --cov=src --cov-report=html --cov-fail-under=80
+          pytest --cov=src --cov-report=html --cov-fail-under=90
           cp .coverage coverage.html
 
       # Fazer upload do relatório de cobertura
